@@ -8,6 +8,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -50,4 +51,16 @@ public class Ticket {
     @Column(name = "updated_at",nullable = false)
     private LocalDateTime updatedAt;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Ticket ticket = (Ticket) o;
+        return Objects.equals(getId(), ticket.getId()) && getStatus() == ticket.getStatus() && Objects.equals(getCreatedAt(), ticket.getCreatedAt()) && Objects.equals(getUpdatedAt(), ticket.getUpdatedAt());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getStatus(), getCreatedAt(), getUpdatedAt());
+    }
 }

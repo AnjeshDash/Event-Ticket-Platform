@@ -6,10 +6,11 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
-@Table(name = "ticket_validations")
+@Table(name = "ticket_validation")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -42,4 +43,17 @@ public class TicketValidation {
     @LastModifiedDate
     @Column(name = "updated_at",nullable = false)
     private LocalDateTime updatedAt;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TicketValidation that = (TicketValidation) o;
+        return Objects.equals(getId(), that.getId()) && getStatus() == that.getStatus() && Objects.equals(getCreatedAt(), that.getCreatedAt()) && Objects.equals(getUpdatedAt(), that.getUpdatedAt());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getStatus(), getCreatedAt(), getUpdatedAt());
+    }
 }
