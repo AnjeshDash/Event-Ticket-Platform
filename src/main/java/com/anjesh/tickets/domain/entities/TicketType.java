@@ -22,37 +22,37 @@ public class TicketType {
 
     @Id
     @Column(name = "id", nullable = false, updatable = false)
-    @GeneratedValue(strategy = GenerationType.UUID)  // Page 89: "id - A unique identifier"
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(name = "name", nullable = false)  // Page 89: "name - The type of ticket"
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "price", nullable = false)  // Page 89: "price - Cost of the ticket"
+    @Column(name = "price", nullable = false)
     private Double price;
 
-    @Column(name = "description")  // Page 113: "A field named description has been added"
-    private String description;    // This was added based on UI requirements
+    @Column(name = "description")
+    private String description;
 
-    @Column(name = "total_available")  // Page 89: "totalAvailable - Maximum number that can be sold"
+    @Column(name = "total_available")
     private Integer totalAvailable;
 
-    @ManyToOne(fetch = FetchType.LAZY)  // Page 89: TicketType belongs to an Event
-    @JoinColumn(name = "event_id")  // Page 90: Added to Event class update
-    private Event event;  // Critical fix from page 126: Must set this in service layer
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "event_id")
+    private Event event;
 
-    @OneToMany(mappedBy = "ticketType", cascade = CascadeType.ALL)  // Page 92-93: Added tickets reference
-    private List<Ticket> tickets = new ArrayList<>();  // Page 93: "private List<Ticket> tickets = new ArrayList<>();"
+    @OneToMany(mappedBy = "ticketType", cascade = CascadeType.ALL)
+    private List<Ticket> tickets = new ArrayList<>();
 
     @CreatedDate
-    @Column(name = "created_at", updatable = false, nullable = false)  // Page 89: Audit field
+    @Column(name = "created_at", updatable = false, nullable = false)
     private LocalDateTime createdAt;
 
     @LastModifiedDate
-    @Column(name = "updated_at", nullable = false)  // Page 89: Audit field
+    @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
-    // Page 98-99: Equals and HashCode implementation guidelines
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

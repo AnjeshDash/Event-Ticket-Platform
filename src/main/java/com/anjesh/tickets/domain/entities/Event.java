@@ -28,7 +28,6 @@ public class Event {
     @Column(name = "name", nullable = false)
     private String name;
 
-    // FIXED: Changed column names to avoid PostgreSQL reserved keywords
     @Column(name = "event_start")
     private LocalDateTime start;
 

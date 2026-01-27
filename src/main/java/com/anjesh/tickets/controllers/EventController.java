@@ -3,6 +3,7 @@ package com.anjesh.tickets.controllers;
 import com.anjesh.tickets.domain.CreateEventRequest;
 import com.anjesh.tickets.domain.dtos.CreateEventRequestDto;
 import com.anjesh.tickets.domain.dtos.CreateEventResponseDto;
+import com.anjesh.tickets.domain.dtos.GetEventDetailsResponseDto;
 import com.anjesh.tickets.domain.dtos.ListEventResponseDto;
 import com.anjesh.tickets.domain.entities.Event;
 import com.anjesh.tickets.mappers.EventMapper;
@@ -45,6 +46,18 @@ public class EventController {
         UUID userId = parseUserId(jwt);
         Page<Event> events = eventService.listEventsForOrganizer(userId, pageable);
         return ResponseEntity.ok(events.map(eventMapper::toListEventResponseDto));
+    }
+
+    @GetMapping(path = "/{eventId}")
+    public ResponseEntity<GetEventDetailsResponseDto> getEvent(
+            @AuthenticationPrincipal Jwt jwt,
+            @PathVariable UUID eventId
+    ){
+        UUID userID = parseUserId(jwt);
+        return eventService.getEventForOrganizer(userID, eventId)
+                .map(eventMapper::toGetEventDetailsResponseDto)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     private UUID parseUserId(Jwt jwt){
