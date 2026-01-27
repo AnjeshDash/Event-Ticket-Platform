@@ -2,10 +2,9 @@ package com.anjesh.tickets.mappers;
 
 import com.anjesh.tickets.domain.CreateEventRequest;
 import com.anjesh.tickets.domain.CreateTicketTypeRequest;
-import com.anjesh.tickets.domain.dtos.CreateEventRequestDto;
-import com.anjesh.tickets.domain.dtos.CreateEventResponseDto;
-import com.anjesh.tickets.domain.dtos.CreateTicketTypeRequestDto;
+import com.anjesh.tickets.domain.dtos.*;
 import com.anjesh.tickets.domain.entities.Event;
+import com.anjesh.tickets.domain.entities.TicketType;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 
@@ -17,5 +16,9 @@ public interface EventMapper {
     CreateEventRequest fromDto(CreateEventRequestDto dto);
 
     CreateEventResponseDto toDto(Event event);
+
+    ListEventTicketTypeResponseDto toDto(TicketType ticketType);
+
+    ListEventResponseDto toListEventResponseDto(Event event);
 
 }
