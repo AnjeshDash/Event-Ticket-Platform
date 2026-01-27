@@ -29,10 +29,10 @@ public class Event {
     private String name;
 
     // FIXED: Changed column names to avoid PostgreSQL reserved keywords
-    @Column(name = "start_time")
+    @Column(name = "event_start")
     private LocalDateTime start;
 
-    @Column(name = "end_time")
+    @Column(name = "event_end")
     private LocalDateTime end;
 
     @Column(name = "venue", nullable = false)

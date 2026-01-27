@@ -10,6 +10,7 @@ import com.anjesh.tickets.repositories.UserRepository;
 import com.anjesh.tickets.services.EventService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -22,11 +23,14 @@ public class EventServiceImpl implements EventService {
     private final EventRepository eventRepository;
 
     @Override
+    @Transactional
     public Event createEvent(UUID organizerId, CreateEventRequest event) {
         User organizer = userRepository.findById(organizerId)
-                .orElseThrow(()->new UserNotFoundException(
-                        String.format("User with ID '%s' not found", organizerId))
-                );
+                .orElseThrow(() -> new UserNotFoundException(
+                        String.format("User with ID '%s' not found", organizerId)));
+
+        // eventToCreate needs to be moved up here (FIX FROM PAGE 126)
+        Event eventToCreate = new Event();
 
         List<TicketType> ticketTypesToCreate = event.getTicketTypes().stream().map(
                 ticketType -> {
@@ -35,10 +39,11 @@ public class EventServiceImpl implements EventService {
                     ticketTypeToCreate.setPrice(ticketType.getPrice());
                     ticketTypeToCreate.setDescription(ticketType.getDescription());
                     ticketTypeToCreate.setTotalAvailable(ticketType.getTotalAvailable());
+                    // 2. The next line needs to be added (FIX FROM PAGE 126)
+                    ticketTypeToCreate.setEvent(eventToCreate);
                     return ticketTypeToCreate;
                 }).toList();
 
-        Event eventToCreate = new Event();
         eventToCreate.setName(event.getName());
         eventToCreate.setStart(event.getStart());
         eventToCreate.setEnd(event.getEnd());
