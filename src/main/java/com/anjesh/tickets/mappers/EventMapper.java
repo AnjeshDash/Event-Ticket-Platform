@@ -14,7 +14,7 @@ import org.mapstruct.ReportingPolicy;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface EventMapper {
 
-    // From page 121: Create event mapping methods
+
     CreateTicketTypeRequest fromDto(CreateTicketTypeRequestDto dto);
 
     CreateEventRequest fromDto(CreateEventRequestDto dto);
@@ -29,7 +29,6 @@ public interface EventMapper {
 
     GetEventDetailsResponseDto toGetEventDetailsResponseDto(Event event);
 
-    // From page 159: Update event mapping methods
     UpdateTicketTypeRequest fromDto(UpdateTicketTypeRequestDto dto);
 
     UpdateEventRequest fromDto(UpdateEventRequestDto dto);
@@ -38,10 +37,8 @@ public interface EventMapper {
 
     UpdateEventResponseDto toUpdateEventResponseDto(Event event);
 
-    // From page 173: Published events mapping methods
     ListPublishedEventResponseDto toListPublishedEventResponseDto(Event event);
 
-    // From page 189: Get published event details mapping methods
     GetPublishedEventDetailsTicketTypesResponseDto toGetPublishedEventDetailsTicketTypesResponseDto(TicketType ticketType);
 
     GetPublishedEventDetailsResponseDto toGetPublishedEventDetailsResponseDto(Event event);
