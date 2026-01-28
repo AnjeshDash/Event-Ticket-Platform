@@ -21,5 +21,7 @@ public interface EventService {
 
     Page<Event> listPublishedEvents(Pageable pageable);
 
+    Page<Event> searchPublishedEvents(String query, Pageable pageable);
+
 
 }
