@@ -42,7 +42,7 @@ public class TicketTypeServiceImpl implements TicketTypeService {
         Integer totalAvailable = ticketType.getTotalAvailable();
 
         if(totalAvailable != null && purchasedTickets + 1 > totalAvailable) {
-            throw new TicketsSoldOutException();  // Also fix exception name
+            throw new TicketsSoldOutException();
         }
         Ticket ticket = new Ticket();
         ticket.setStatus(TicketStatusEnum.PURCHASED);
