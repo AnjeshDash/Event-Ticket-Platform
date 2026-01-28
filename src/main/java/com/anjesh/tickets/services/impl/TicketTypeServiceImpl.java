@@ -4,7 +4,7 @@ import com.anjesh.tickets.domain.entities.Ticket;
 import com.anjesh.tickets.domain.entities.TicketStatusEnum;
 import com.anjesh.tickets.domain.entities.TicketType;
 import com.anjesh.tickets.domain.entities.User;
-import com.anjesh.tickets.exceptions.TicketSoldOutException;
+import com.anjesh.tickets.exceptions.TicketsSoldOutException;
 import com.anjesh.tickets.exceptions.TicketTypeNotFoundException;
 import com.anjesh.tickets.exceptions.UserNotFoundException;
 import com.anjesh.tickets.repositories.TicketRepository;
@@ -31,18 +31,18 @@ public class TicketTypeServiceImpl implements TicketTypeService {
     @Transactional
     public Ticket purchaseTicket(UUID userId, UUID ticketTypeId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(
-                String.format("User with ID '%s' was not found", userId)
+                String.format("User with ID %s was not found", userId)
         ));
 
         TicketType ticketType = ticketTypeRepository.findByIdWithLock(ticketTypeId).orElseThrow(() -> new TicketTypeNotFoundException(
-                String.format("Ticket type with ID '%s' was not found", ticketTypeId)
+                String.format("Ticket type with ID %s was not found", ticketTypeId)
         ));
 
         int purchasedTickets = ticketRepository.countByTicketTypeId(ticketType.getId());
         Integer totalAvailable = ticketType.getTotalAvailable();
 
-        if (purchasedTickets + 1 > totalAvailable){
-            throw new TicketSoldOutException();
+        if(totalAvailable != null && purchasedTickets + 1 > totalAvailable) {
+            throw new TicketsSoldOutException();  // Also fix exception name
         }
         Ticket ticket = new Ticket();
         ticket.setStatus(TicketStatusEnum.PURCHASED);
@@ -51,7 +51,6 @@ public class TicketTypeServiceImpl implements TicketTypeService {
 
         Ticket savedTicket = ticketRepository.save(ticket);
         qrCodeService.generateQrCode(savedTicket);
-
         return ticketRepository.save(savedTicket);
     }
 }
