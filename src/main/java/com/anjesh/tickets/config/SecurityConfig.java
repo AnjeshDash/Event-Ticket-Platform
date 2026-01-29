@@ -38,5 +38,7 @@ public class SecurityConfig {
         return http.build();
     }
 
+    // Made some changes in the code to fix errors
+
 
 }
