@@ -111,9 +111,19 @@ const oidcConfig = {
 };
 
 createRoot(document.getElementById("root")!).render(
-  <StrictMode>
-    <AuthProvider {...oidcConfig}>
-      <RouterProvider router={router} />
-    </AuthProvider>
-  </StrictMode>,
+  <AuthProvider
+    {...oidcConfig}
+    onSigninCallback={() => {
+      window.history.replaceState(
+        {},
+        document.title,
+        window.location.pathname,
+      );
+      const redirectPath = localStorage.getItem("redirectPath") || "/";
+      localStorage.removeItem("redirectPath");
+      window.location.href = redirectPath;
+    }}
+  >
+    <RouterProvider router={router} />
+  </AuthProvider>,
 );

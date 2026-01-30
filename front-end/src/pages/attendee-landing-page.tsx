@@ -21,7 +21,7 @@ const AttendeeLandingPage: React.FC = () => {
     SpringBootPagination<PublishedEventSummary> | undefined
   >();
   const [error, setError] = useState<string | undefined>();
-  const [query, setQuery] = useState<string | undefined>();
+  const [query, setQuery] = useState<string>("");
 
   useEffect(() => {
     if (query && query.length > 0) {
@@ -46,8 +46,9 @@ const AttendeeLandingPage: React.FC = () => {
   };
 
   const queryPublishedEvents = async () => {
-    if (!query) {
+    if (!query || query.trim().length === 0) {
       await refreshPublishedEvents();
+      return;
     }
 
     try {
