@@ -65,6 +65,32 @@ npm run dev
 
 ---
 
+## 🌍 Production Deployment
+
+### 1. Database (Neon.tech)
+1.  Create a free PostgreSQL instance on [Neon](https://neon.tech/).
+2.  Copy the **Connection String**.
+
+### 2. Backend (Render + Docker)
+1.  Create a new **Web Service** on [Render](https://render.com/).
+2.  Connect your GitHub repo. Render will automatically detect the `Dockerfile`.
+3.  Add **Environment Variables**:
+    *   `SPRING_DATASOURCE_URL`: (Your Neon connection string)
+    *   `SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI`: `https://YOUR_KEYCLOAK_URL/realms/event-ticket-platform`
+    *   `JAVA_OPTS`: `-Xmx512m` (Optional, for memory management)
+
+### 3. Frontend (Netlify)
+1.  Connect your GitHub repo to [Netlify](https://www.netlify.com/).
+2.  **Build Settings**:
+    *   Base directory: `front-end`
+    *   Build command: `npm run build`
+    *   Publish directory: `front-end/dist`
+3.  **Proxy Configuration**:
+    *   Edit `front-end/public/_redirects` and replace `YOUR_RENDER_BACKEND_URL` with your actual Render URL.
+4.  Update `VITE_KEYCLOAK_URL` in your Netlify Environment Variables to point to your deployed Keycloak.
+
+---
+
 ## 🔐 Role-Based Access
 - **ORGANIZER:** Can create/update events and define ticket types.
 - **ATTENDEE:** Can browse events and purchase tickets.
