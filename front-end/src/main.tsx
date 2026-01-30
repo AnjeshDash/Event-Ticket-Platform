@@ -109,6 +109,9 @@ const oidcConfig = {
     "http://localhost:9090/realms/event-ticket-platform",
   client_id: "event-ticket-platform-app",
   redirect_uri: window.location.origin + "/callback",
+  scope: "openid profile email",
+  monitorSession: false,
+  checkSessionIFrame: false,
 };
 
 createRoot(document.getElementById("root")!).render(
