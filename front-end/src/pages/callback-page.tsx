@@ -4,7 +4,7 @@ import { useNavigate } from "react-router";
 import { Button } from "@/components/ui/button";
 
 const CallbackPage: React.FC = () => {
-  const { isLoading, isAuthenticated, error, user } = useAuth();
+  const { isLoading, isAuthenticated, error } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {

@@ -1,4 +1,3 @@
-import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
 import AttendeeLandingPage from "./pages/attendee-landing-page.tsx";
