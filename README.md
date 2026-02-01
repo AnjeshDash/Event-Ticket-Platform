@@ -22,7 +22,6 @@ Before running the project, ensure you have the following installed:
 - **Java 17 (JDK)**
 - **Node.js (v18+)**
 - **Docker & Docker Compose**
-- **Maven** (optional, uses `./mvnw` wrapper)
 
 ---
 
