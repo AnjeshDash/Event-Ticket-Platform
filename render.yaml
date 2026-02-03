@@ -1,20 +1,21 @@
-- type: web
-  name: keycloak-auth-service
-  env: docker
-  plan: free
-  region: singapore
-  image: quay.io/keycloak/keycloak:21.1.1
-  dockerCommand: start --proxy edge --hostname-strict false
-  envVars:
-    - key: KEYCLOAK_ADMIN
-      value: admin
-    - key: KEYCLOAK_ADMIN_PASSWORD
-      value: Anjesh@123
-    - key: KC_PROXY
-      value: edge
-    - key: KC_HTTP_ENABLED
-      value: true
-    - key: JAVA_OPTS
-      value: -Xmx512m
-  healthCheckPath: /
-  autoDeploy: true
+services:
+  - type: web
+    name: keycloak-auth-service
+    env: docker
+    plan: free
+    region: singapore
+    image: quay.io/keycloak/keycloak:21.1.1
+    dockerCommand: start --proxy edge --hostname-strict false
+    envVars:
+      - key: KEYCLOAK_ADMIN
+        value: admin
+      - key: KEYCLOAK_ADMIN_PASSWORD
+        value: Anjesh@123
+      - key: KC_PROXY
+        value: edge
+      - key: KC_HTTP_ENABLED
+        value: true
+      - key: JAVA_OPTS
+        value: -Xmx512m
+    healthCheckPath: /
+    autoDeploy: true
