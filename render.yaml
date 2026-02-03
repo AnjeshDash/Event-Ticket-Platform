@@ -2,10 +2,9 @@ services:
   - type: web
     name: keycloak-auth-service
     env: docker
+    dockerfilePath: ./Dockerfile.keycloak
     plan: free
     region: singapore
-    image: quay.io/keycloak/keycloak:21.1.1
-    dockerCommand: start --proxy edge --hostname-strict false
     envVars:
       - key: KEYCLOAK_ADMIN
         value: admin
