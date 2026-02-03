@@ -54,7 +54,22 @@ Set these environment variables:
 DATABASE_URL=jdbc:postgresql://your-db-host:5432/your-db-name
 DB_USERNAME=your-db-username
 DB_PASSWORD=your-db-password
+DDL_AUTO=update
+
+# Connection Pool Settings (optional but recommended)
+DB_MAX_POOL_SIZE=10
+DB_MIN_IDLE=2
+DB_CONNECTION_TIMEOUT=30000
+DB_IDLE_TIMEOUT=600000
+DB_MAX_LIFETIME=1800000
 ```
+
+## Troubleshooting
+If you encounter connection errors like:
+```
+Caused by: org.postgresql.util.PSQLException: Connection to localhost:5432 refused
+```
+This means your app is trying to connect to localhost instead of the actual database. Ensure you're using environment variables as configured in the application.properties file.
 
 ## Frontend Deployment
 For the frontend, you can deploy to:

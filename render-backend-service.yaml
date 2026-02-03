@@ -1,0 +1,31 @@
+services:
+  - type: web
+    name: event-ticket-backend
+    env: docker
+    plan: free
+    region: ohio
+    buildCommand: ./mvnw clean package -DskipTests
+    startCommand: java -jar target/*.jar
+    envVars:
+      - key: DATABASE_URL
+        sync: false  # Will be set to your PostgreSQL URL
+      - key: DB_USERNAME
+        sync: false  # Will be set to your DB username
+      - key: DB_PASSWORD
+        sync: false  # Will be set to your DB password
+      - key: DDL_AUTO
+        value: update
+      - key: DB_MAX_POOL_SIZE
+        value: "10"
+      - key: DB_MIN_IDLE
+        value: "2"
+      - key: DB_CONNECTION_TIMEOUT
+        value: "30000"
+      - key: DB_IDLE_TIMEOUT
+        value: "600000"
+      - key: DB_MAX_LIFETIME
+        value: "1800000"
+      - key: KEYCLOAK_ISSUER_URI
+        sync: false  # Will be set to your Keycloak URL
+    healthCheckPath: /actuator/health
+    autoDeploy: false
