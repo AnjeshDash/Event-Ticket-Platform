@@ -13,7 +13,7 @@ import {
   UpdateEventRequest,
 } from "@/domain/domain";
 
-const BASE_URL = import.meta.env.VITE_API_BASE_URL || "/api";
+const BASE_URL = (import.meta.env.VITE_API_BASE_URL || "") + "/api";
 
 export const createEvent = async (
   accessToken: string,
@@ -45,7 +45,7 @@ export const updateEvent = async (
   id: string,
   request: UpdateEventRequest,
 ): Promise<void> => {
-  const response = await fetch(`/api/v1/events/${id}`, {
+  const response = await fetch(`${BASE_URL}/v1/events/${id}`, {
     method: "PUT",
     headers: {
       Authorization: `Bearer ${accessToken}`,
@@ -96,7 +96,7 @@ export const getEvent = async (
   accessToken: string,
   id: string,
 ): Promise<EventDetails> => {
-  const response = await fetch(`/api/v1/events/${id}`, {
+  const response = await fetch(`${BASE_URL}/v1/events/${id}`, {
     method: "GET",
     headers: {
       Authorization: `Bearer ${accessToken}`,
@@ -122,7 +122,7 @@ export const deleteEvent = async (
   accessToken: string,
   id: string,
 ): Promise<void> => {
-  const response = await fetch(`/api/v1/events/${id}`, {
+  const response = await fetch(`${BASE_URL}/v1/events/${id}`, {
     method: "DELETE",
     headers: {
       Authorization: `Bearer ${accessToken}`,
