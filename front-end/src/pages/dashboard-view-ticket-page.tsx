@@ -25,7 +25,14 @@ const DashboardViewTicketPage: React.FC = () => {
         setIsQrCodeLoading(true);
         setError(undefined);
 
-        setTicket(await getTicket(accessToken, id));
+        const ticketData = await getTicket(accessToken, id);
+        // Convert date strings to Date objects safely
+        const processedTicket = {
+          ...ticketData,
+          eventStart: ticketData.eventStart ? new Date(ticketData.eventStart) : new Date(),
+          eventEnd: ticketData.eventEnd ? new Date(ticketData.eventEnd) : new Date(),
+        };
+        setTicket(processedTicket);
         setQrCodeUrl(URL.createObjectURL(await getTicketQr(accessToken, id)));
       } catch (err) {
         if (err instanceof Error) {
@@ -60,6 +67,18 @@ const DashboardViewTicketPage: React.FC = () => {
     }
   };
 
+  const formatDate = (date: Date) => {
+    try {
+      // Check if date is valid
+      if (isNaN(date.getTime())) {
+        return "Date not available";
+      }
+      return format(date, "Pp");
+    } catch {
+      return "Date not available";
+    }
+  };
+
   if (!ticket) {
     return <p>Loading..</p>;
   }
@@ -88,8 +107,8 @@ const DashboardViewTicketPage: React.FC = () => {
           <div className="flex items-center gap-2 text-purple-300 mb-8">
             <Calendar className="w-4 text-purple-200" />
             <div>
-              {format(ticket.eventStart, "Pp")} -{" "}
-              {format(ticket.eventEnd, "Pp")}
+              {formatDate(ticket.eventStart)} -{" "}
+              {formatDate(ticket.eventEnd)}
             </div>
           </div>
 
