@@ -16,9 +16,13 @@ services:
         value: "true"
       - key: KC_HOSTNAME_STRICT
         value: "false"
+      - key: KC_HOSTNAME
+        value: keycloak-auth-service-2kac.onrender.com
       - key: KC_DB
         value: dev-file
-    healthCheckPath: /
+      - key: KC_HEALTH_ENABLED
+        value: "true"
+    healthCheckPath: /health/live
     autoDeploy: true
   - type: web
     name: event-ticket-backend
@@ -48,5 +52,5 @@ services:
         value: "600000"
       - key: DB_MAX_LIFETIME
         value: "1800000"
-    healthCheckPath: /
+    healthCheckPath: /api/v1/published-events
     autoDeploy: true
