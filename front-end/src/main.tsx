@@ -107,7 +107,7 @@ const oidcConfig = {
   authority:
     import.meta.env.VITE_KEYCLOAK_URL ||
     "http://localhost:9090/realms/event-ticket-platform",
-  client_id: "event-ticket-platform-app",
+  client_id: import.meta.env.VITE_CLIENT_ID || "event-ticket-platform-app",
   redirect_uri: window.location.origin + "/callback",
   scope: "openid profile email",
   monitorSession: false,

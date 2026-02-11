@@ -13,11 +13,13 @@ import {
   UpdateEventRequest,
 } from "@/domain/domain";
 
+const BASE_URL = import.meta.env.VITE_API_BASE_URL || "/api";
+
 export const createEvent = async (
   accessToken: string,
   request: CreateEventRequest,
 ): Promise<void> => {
-  const response = await fetch("/api/v1/events", {
+  const response = await fetch(`${BASE_URL}/v1/events`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${accessToken}`,
@@ -68,7 +70,7 @@ export const listEvents = async (
   accessToken: string,
   page: number,
 ): Promise<SpringBootPagination<EventSummary>> => {
-  const response = await fetch(`/api/v1/events?page=${page}&size=2`, {
+  const response = await fetch(`${BASE_URL}/v1/events?page=${page}&size=2`, {
     method: "GET",
     headers: {
       Authorization: `Bearer ${accessToken}`,
@@ -142,7 +144,7 @@ export const deleteEvent = async (
 export const listPublishedEvents = async (
   page: number,
 ): Promise<SpringBootPagination<PublishedEventSummary>> => {
-  const response = await fetch(`/api/v1/published-events?page=${page}&size=4`, {
+  const response = await fetch(`${BASE_URL}/v1/published-events?page=${page}&size=4`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -168,7 +170,7 @@ export const searchPublishedEvents = async (
   page: number,
 ): Promise<SpringBootPagination<PublishedEventSummary>> => {
   const response = await fetch(
-    `/api/v1/published-events?q=${query}&page=${page}&size=4`,
+    `${BASE_URL}/v1/published-events?q=${query}&page=${page}&size=4`,
     {
       method: "GET",
       headers: {
@@ -194,7 +196,7 @@ export const searchPublishedEvents = async (
 export const getPublishedEvent = async (
   id: string,
 ): Promise<PublishedEventDetails> => {
-  const response = await fetch(`/api/v1/published-events/${id}`, {
+  const response = await fetch(`${BASE_URL}/v1/published-events/${id}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -221,7 +223,7 @@ export const purchaseTicket = async (
   ticketTypeId: string,
 ): Promise<void> => {
   const response = await fetch(
-    `/api/v1/events/${eventId}/ticket-types/${ticketTypeId}/tickets`,
+    `${BASE_URL}/v1/events/${eventId}/ticket-types/${ticketTypeId}/tickets`,
     {
       method: "POST",
       headers: {
@@ -246,7 +248,7 @@ export const listTickets = async (
   accessToken: string,
   page: number,
 ): Promise<SpringBootPagination<TicketSummary>> => {
-  const response = await fetch(`/api/v1/tickets?page=${page}&size=8`, {
+  const response = await fetch(`${BASE_URL}/v1/tickets?page=${page}&size=8`, {
     method: "GET",
     headers: {
       Authorization: `Bearer ${accessToken}`,
@@ -272,7 +274,7 @@ export const getTicket = async (
   accessToken: string,
   id: string,
 ): Promise<TicketDetails> => {
-  const response = await fetch(`/api/v1/tickets/${id}`, {
+  const response = await fetch(`${BASE_URL}/v1/tickets/${id}`, {
     method: "GET",
     headers: {
       Authorization: `Bearer ${accessToken}`,
@@ -298,7 +300,7 @@ export const getTicketQr = async (
   accessToken: string,
   id: string,
 ): Promise<Blob> => {
-  const response = await fetch(`/api/v1/tickets/${id}/qr-codes`, {
+  const response = await fetch(`${BASE_URL}/v1/tickets/${id}/qr-codes`, {
     method: "GET",
     headers: {
       Authorization: `Bearer ${accessToken}`,
@@ -316,7 +318,7 @@ export const validateTicket = async (
   accessToken: string,
   request: TicketValidationRequest,
 ): Promise<TicketValidationResponse> => {
-  const response = await fetch(`/api/v1/ticket-validations`, {
+  const response = await fetch(`${BASE_URL}/v1/ticket-validations`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${accessToken}`,
