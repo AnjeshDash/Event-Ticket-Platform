@@ -20,9 +20,9 @@ services:
         value: keycloak-auth-service-2kac.onrender.com
       - key: KC_DB
         value: dev-file
-      - key: KC_HEALTH_ENABLED
-        value: "true"
-    healthCheckPath: /health/live
+      - key: KC_CACHE
+        value: local
+    healthCheckPath: /
     autoDeploy: true
   - type: web
     name: event-ticket-backend
