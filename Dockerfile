@@ -9,12 +9,7 @@ FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
 
-# Create startup script directly with RUN command
-RUN echo '#!/bin/sh' > /start-app.sh && \
-    echo 'PORT=${PORT:-8080}' >> /start-app.sh && \
-    echo 'echo "Starting Spring Boot application on port $PORT"' >> /start-app.sh && \
-    echo 'exec java -jar app.jar --server.port=$PORT' >> /start-app.sh && \
-    chmod +x /start-app.sh
+# Use CMD directly with shell to handle PORT environment variable
+CMD ["sh", "-c", "PORT=${PORT:-8080} && echo \"Starting Spring Boot application on port $PORT\" && exec java -jar app.jar --server.port=$PORT"]
 
 EXPOSE 8080
-ENTRYPOINT ["/start-app.sh"]

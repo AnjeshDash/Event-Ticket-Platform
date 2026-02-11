@@ -19,12 +19,5 @@ ENV KC_BOOTSTRAP_ADMIN_PASSWORD=Anjesh@123
 # Expose port
 EXPOSE 8080
 
-# Create startup script directly with RUN command
-RUN echo '#!/bin/sh' > /start-keycloak.sh && \
-    echo 'PORT=${PORT:-8080}' >> /start-keycloak.sh && \
-    echo 'echo "Starting Keycloak on port $PORT"' >> /start-keycloak.sh && \
-    echo 'exec /opt/keycloak/bin/kc.sh start-dev --http-port=$PORT' >> /start-keycloak.sh && \
-    chmod +x /start-keycloak.sh
-
-# Start Keycloak using the script
-ENTRYPOINT ["/start-keycloak.sh"]
+# Use CMD directly with shell to handle PORT environment variable
+CMD ["sh", "-c", "PORT=${PORT:-8080} && echo \"Starting Keycloak on port $PORT\" && exec /opt/keycloak/bin/kc.sh start-dev --http-port=$PORT"]
