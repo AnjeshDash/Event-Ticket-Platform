@@ -3,8 +3,8 @@ services:
     name: keycloak-auth-service
     env: docker
     plan: free
-    # Use official Keycloak image directly
-    dockerCommand: quay.io/keycloak/keycloak:21.1.1
+    # Use the custom Dockerfile
+    dockerfilePath: ./Dockerfile.keycloak
     region: ohio
     envVars:
       - key: KEYCLOAK_ADMIN
@@ -15,7 +15,13 @@ services:
         value: edge
       - key: KC_HTTP_ENABLED
         value: true
-      - key: KC_HOSTNAME
-        sync: false
-    healthCheckPath: /
+      - key: KC_HOSTNAME_STRICT
+        value: false
+      - key: KC_DB
+        value: dev-file
+      - key: PORT
+        value: 8080
+    healthCheckPath: /health
+    healthCheckProtocol: http
+    healthCheckTimeout: 300
     autoDeploy: false
