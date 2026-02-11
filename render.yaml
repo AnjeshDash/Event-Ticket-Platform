@@ -13,9 +13,11 @@ services:
       - key: KC_PROXY
         value: edge
       - key: KC_HTTP_ENABLED
-        value: true
-      - key: JAVA_OPTS
-        value: -Xmx512m
+        value: "true"
+      - key: KC_HOSTNAME_STRICT
+        value: "false"
+      - key: KC_DB
+        value: dev-file
     healthCheckPath: /
     autoDeploy: true
   - type: web
@@ -35,7 +37,7 @@ services:
       - key: DDL_AUTO
         value: update
       - key: KEYCLOAK_ISSUER_URI
-        value: https://exs-d617tvgnputs73a745s0.onrender.com/realms/event-ticket-platform
+        value: https://keycloak-auth-service-2kac.onrender.com/realms/event-ticket-platform
       - key: DB_MAX_POOL_SIZE
         value: "10"
       - key: DB_MIN_IDLE
