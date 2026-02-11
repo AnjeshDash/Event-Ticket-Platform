@@ -30,8 +30,8 @@ services:
         value: admin
       - key: KC_BOOTSTRAP_ADMIN_PASSWORD
         value: Anjesh@123
-      - key: PORT
-        value: 8080
+      - key: KC_HTTP_PORT
+        value: "8080"
     healthCheckPath: /health
     healthCheckProtocol: http
     healthCheckTimeout: 60
