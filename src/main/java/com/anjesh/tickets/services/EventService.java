@@ -2,7 +2,7 @@ package com.anjesh.tickets.services;
 
 import com.anjesh.tickets.domain.CreateEventRequest;
 import com.anjesh.tickets.domain.UpdateEventRequest;
-import com.anjesh.tickets.domain.entities.Event;
+import com.anjesh.tickets.domain.dtos.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -11,19 +11,20 @@ import java.util.UUID;
 
 public interface EventService {
 
-    Event createEvent(UUID organizerId,CreateEventRequest event);
-    Page<Event> listEventsForOrganizer(UUID organizerId, Pageable pageable);
-    Optional<Event> getEventForOrganizer(UUID organizerId, UUID id);
+    CreateEventResponseDto createEvent(UUID organizerId, CreateEventRequest event);
 
-    Event updateEventForOrganizer(UUID organizerId, UUID id, UpdateEventRequest event);
+    Page<ListEventResponseDto> listEventsForOrganizer(UUID organizerId, Pageable pageable);
+
+    Optional<GetEventDetailsResponseDto> getEventForOrganizer(UUID organizerId, UUID id);
+
+    UpdateEventResponseDto updateEventForOrganizer(UUID organizerId, UUID id, UpdateEventRequest event);
 
     void deleteEventForOrganizer(UUID organizerId, UUID id);
 
-    Page<Event> listPublishedEvents(Pageable pageable);
+    Page<ListPublishedEventResponseDto> listPublishedEvents(Pageable pageable);
 
-    Page<Event> searchPublishedEvents(String query, Pageable pageable);
+    Page<ListPublishedEventResponseDto> searchPublishedEvents(String query, Pageable pageable);
 
-    Optional<Event> getPublishedEvent(UUID id);
-
+    Optional<GetPublishedEventDetailsResponseDto> getPublishedEvent(UUID id);
 
 }

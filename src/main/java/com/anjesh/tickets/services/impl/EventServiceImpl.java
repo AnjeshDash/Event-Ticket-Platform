@@ -3,6 +3,7 @@ package com.anjesh.tickets.services.impl;
 import com.anjesh.tickets.domain.CreateEventRequest;
 import com.anjesh.tickets.domain.UpdateEventRequest;
 import com.anjesh.tickets.domain.UpdateTicketTypeRequest;
+import com.anjesh.tickets.domain.dtos.*;
 import com.anjesh.tickets.domain.entities.Event;
 import com.anjesh.tickets.domain.entities.EventStatusEnum;
 import com.anjesh.tickets.domain.entities.TicketType;
@@ -11,14 +12,15 @@ import com.anjesh.tickets.exceptions.EventNotFoundException;
 import com.anjesh.tickets.exceptions.EventUpdateException;
 import com.anjesh.tickets.exceptions.TicketTypeNotFoundException;
 import com.anjesh.tickets.exceptions.UserNotFoundException;
+import com.anjesh.tickets.mappers.EventMapper;
 import com.anjesh.tickets.repositories.EventRepository;
 import com.anjesh.tickets.repositories.UserRepository;
 import com.anjesh.tickets.services.EventService;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.function.Function;
@@ -30,10 +32,11 @@ public class EventServiceImpl implements EventService {
 
     private final UserRepository userRepository;
     private final EventRepository eventRepository;
+    private final EventMapper eventMapper;
 
     @Override
     @Transactional
-    public Event createEvent(UUID organizerId, CreateEventRequest event) {
+    public CreateEventResponseDto createEvent(UUID organizerId, CreateEventRequest event) {
         User organizer = userRepository.findById(organizerId)
                 .orElseThrow(() -> new UserNotFoundException(
                         String.format("User with ID '%s' not found", organizerId)));
@@ -61,22 +64,27 @@ public class EventServiceImpl implements EventService {
         eventToCreate.setOrganizer(organizer);
         eventToCreate.setTicketTypes(ticketTypesToCreate);
 
-        return eventRepository.save(eventToCreate);
+        Event savedEvent = eventRepository.save(eventToCreate);
+        return eventMapper.toDto(savedEvent);
     }
 
     @Override
-    public Page<Event> listEventsForOrganizer(UUID organizerId, Pageable pageable) {
-        return eventRepository.findByOrganizerId(organizerId, pageable);
+    @Transactional(readOnly = true)
+    public Page<ListEventResponseDto> listEventsForOrganizer(UUID organizerId, Pageable pageable) {
+        return eventRepository.findByOrganizerId(organizerId, pageable)
+                .map(eventMapper::toListEventResponseDto);
     }
 
     @Override
-    public Optional<Event> getEventForOrganizer(UUID organizerId, UUID id) {
-        return eventRepository.findByIdAndOrganizerId(id, organizerId);
+    @Transactional(readOnly = true)
+    public Optional<GetEventDetailsResponseDto> getEventForOrganizer(UUID organizerId, UUID id) {
+        return eventRepository.findByIdAndOrganizerId(id, organizerId)
+                .map(eventMapper::toGetEventDetailsResponseDto);
     }
 
     @Override
     @Transactional
-    public Event updateEventForOrganizer(UUID organizerId, UUID id, UpdateEventRequest event) {
+    public UpdateEventResponseDto updateEventForOrganizer(UUID organizerId, UUID id, UpdateEventRequest event) {
         if (null == event.getId()) {
             throw new EventUpdateException("Event ID cannot be null");
         }
@@ -132,28 +140,35 @@ public class EventServiceImpl implements EventService {
             }
         }
 
-        return eventRepository.save(existingEvent);
+        Event savedEvent = eventRepository.save(existingEvent);
+        return eventMapper.toUpdateEventResponseDto(savedEvent);
     }
 
     @Override
     @Transactional
     public void deleteEventForOrganizer(UUID organizerId, UUID id) {
-        getEventForOrganizer(organizerId, id).ifPresent(eventRepository::delete);
+        eventRepository.findByIdAndOrganizerId(id, organizerId)
+                .ifPresent(eventRepository::delete);
     }
 
     @Override
-    public Page<Event> listPublishedEvents(Pageable pageable) {
-        return eventRepository.findByStatus(EventStatusEnum.PUBLISHED, pageable);
+    @Transactional(readOnly = true)
+    public Page<ListPublishedEventResponseDto> listPublishedEvents(Pageable pageable) {
+        return eventRepository.findByStatus(EventStatusEnum.PUBLISHED, pageable)
+                .map(eventMapper::toListPublishedEventResponseDto);
     }
 
     @Override
-    public Page<Event> searchPublishedEvents(String query, Pageable pageable) {
-        return eventRepository.searchEvents(query, pageable);
+    @Transactional(readOnly = true)
+    public Page<ListPublishedEventResponseDto> searchPublishedEvents(String query, Pageable pageable) {
+        return eventRepository.searchEvents(query, pageable)
+                .map(eventMapper::toListPublishedEventResponseDto);
     }
 
     @Override
-    @Transactional
-    public Optional<Event> getPublishedEvent(UUID id) {
-        return eventRepository.findByIdAndStatus(id, EventStatusEnum.PUBLISHED);
+    @Transactional(readOnly = true)
+    public Optional<GetPublishedEventDetailsResponseDto> getPublishedEvent(UUID id) {
+        return eventRepository.findByIdAndStatus(id, EventStatusEnum.PUBLISHED)
+                .map(eventMapper::toGetPublishedEventDetailsResponseDto);
     }
 }

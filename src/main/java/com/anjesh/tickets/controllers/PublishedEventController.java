@@ -2,8 +2,6 @@ package com.anjesh.tickets.controllers;
 
 import com.anjesh.tickets.domain.dtos.GetPublishedEventDetailsResponseDto;
 import com.anjesh.tickets.domain.dtos.ListPublishedEventResponseDto;
-import com.anjesh.tickets.domain.entities.Event;
-import com.anjesh.tickets.mappers.EventMapper;
 import com.anjesh.tickets.services.EventService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -19,30 +17,23 @@ import java.util.UUID;
 public class PublishedEventController {
 
     private final EventService eventService;
-    private final EventMapper eventMapper;
 
     @GetMapping
     public ResponseEntity<Page<ListPublishedEventResponseDto>> listPublishedEvents(
             @RequestParam(required = false) String q,
-            Pageable pageable){
+            Pageable pageable) {
 
-        Page<Event> events;
-        if (null != q && !q.trim().isEmpty()){
-            events = eventService.searchPublishedEvents(q, pageable);
+        if (null != q && !q.trim().isEmpty()) {
+            return ResponseEntity.ok(eventService.searchPublishedEvents(q, pageable));
         } else {
-            events = eventService.listPublishedEvents(pageable);
+            return ResponseEntity.ok(eventService.listPublishedEvents(pageable));
         }
-
-        return ResponseEntity.ok(events
-                .map(eventMapper::toListPublishedEventResponseDto));
     }
 
     @GetMapping(path = "/{eventId}")
     public ResponseEntity<GetPublishedEventDetailsResponseDto> getPublishedEventDetails(
-            @PathVariable UUID eventId
-    ){
+            @PathVariable UUID eventId) {
         return eventService.getPublishedEvent(eventId)
-                .map(eventMapper::toGetPublishedEventDetailsResponseDto)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }

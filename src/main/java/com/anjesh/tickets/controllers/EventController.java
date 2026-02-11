@@ -3,7 +3,6 @@ package com.anjesh.tickets.controllers;
 import com.anjesh.tickets.domain.CreateEventRequest;
 import com.anjesh.tickets.domain.UpdateEventRequest;
 import com.anjesh.tickets.domain.dtos.*;
-import com.anjesh.tickets.domain.entities.Event;
 import com.anjesh.tickets.mappers.EventMapper;
 import com.anjesh.tickets.services.EventService;
 import jakarta.validation.Valid;
@@ -34,8 +33,7 @@ public class EventController {
         CreateEventRequest createEventRequest = eventMapper.fromDto(createEventRequestDto);
         UUID userId = parseUserId(jwt);
 
-        Event createdEvent = eventService.createEvent(userId, createEventRequest);
-        CreateEventResponseDto createEventResponseDto = eventMapper.toDto(createdEvent);
+        CreateEventResponseDto createEventResponseDto = eventService.createEvent(userId, createEventRequest);
         return new ResponseEntity<>(createEventResponseDto, HttpStatus.CREATED);
     }
 
@@ -47,30 +45,25 @@ public class EventController {
         UpdateEventRequest updateEventRequest = eventMapper.fromDto(UpdateEventRequestDto);
         UUID userId = parseUserId(jwt);
 
-        Event updatedEvent = eventService.updateEventForOrganizer(
-                userId,eventId, updateEventRequest
-        );
-        UpdateEventResponseDto updateEventResponseDto = eventMapper.toUpdateEventResponseDto(updatedEvent);
+        UpdateEventResponseDto updateEventResponseDto = eventService.updateEventForOrganizer(
+                userId, eventId, updateEventRequest);
         return ResponseEntity.ok(updateEventResponseDto);
     }
 
     @GetMapping
     public ResponseEntity<Page<ListEventResponseDto>> listEvents(
-            @AuthenticationPrincipal Jwt jwt, Pageable pageable
-    ){
+            @AuthenticationPrincipal Jwt jwt, Pageable pageable) {
         UUID userId = parseUserId(jwt);
-        Page<Event> events = eventService.listEventsForOrganizer(userId, pageable);
-        return ResponseEntity.ok(events.map(eventMapper::toListEventResponseDto));
+        Page<ListEventResponseDto> events = eventService.listEventsForOrganizer(userId, pageable);
+        return ResponseEntity.ok(events);
     }
 
     @GetMapping(path = "/{eventId}")
     public ResponseEntity<GetEventDetailsResponseDto> getEvent(
             @AuthenticationPrincipal Jwt jwt,
-            @PathVariable UUID eventId
-    ){
+            @PathVariable UUID eventId) {
         UUID userID = parseUserId(jwt);
         return eventService.getEventForOrganizer(userID, eventId)
-                .map(eventMapper::toGetEventDetailsResponseDto)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
@@ -78,8 +71,7 @@ public class EventController {
     @DeleteMapping(path = "/{eventId}")
     public ResponseEntity<Void> deleteEvent(
             @AuthenticationPrincipal Jwt jwt,
-            @PathVariable UUID eventId
-    ){
+            @PathVariable UUID eventId) {
         UUID userID = parseUserId(jwt);
         eventService.deleteEventForOrganizer(userID, eventId);
         return ResponseEntity.noContent().build();

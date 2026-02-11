@@ -13,7 +13,9 @@ import java.util.UUID;
 public interface TicketRepository extends JpaRepository<Ticket, UUID> {
     int countByTicketTypeId(UUID ticketTypeId);
 
+    @org.springframework.data.jpa.repository.EntityGraph(attributePaths = { "ticketType", "ticketType.event" })
     Page<Ticket> findByPurchaserId(UUID purchaserId, Pageable pageable);
 
-    Optional<Ticket> findByIdAndPurchaserId(UUID id,UUID purchaserId);
+    @org.springframework.data.jpa.repository.EntityGraph(attributePaths = { "ticketType", "ticketType.event" })
+    Optional<Ticket> findByIdAndPurchaserId(UUID id, UUID purchaserId);
 }
