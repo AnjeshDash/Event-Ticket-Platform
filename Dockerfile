@@ -9,15 +9,12 @@ FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
 
-# Create a startup script that handles Render's PORT environment variable
-COPY <<EOF /start-app.sh
-#!/bin/sh
-PORT=\${PORT:-8080}
-echo "Starting Spring Boot application on port \$PORT"
-exec java -jar app.jar --server.port=\$PORT
-EOF
-
-RUN chmod +x /start-app.sh
+# Create startup script directly with RUN command
+RUN echo '#!/bin/sh' > /start-app.sh && \
+    echo 'PORT=${PORT:-8080}' >> /start-app.sh && \
+    echo 'echo "Starting Spring Boot application on port $PORT"' >> /start-app.sh && \
+    echo 'exec java -jar app.jar --server.port=$PORT' >> /start-app.sh && \
+    chmod +x /start-app.sh
 
 EXPOSE 8080
 ENTRYPOINT ["/start-app.sh"]
