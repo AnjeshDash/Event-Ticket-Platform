@@ -785,3 +785,4 @@ const DashboardManageEventPage: React.FC = () => {
     </div>
   );
 };
+export default DashboardManageEventPage;
