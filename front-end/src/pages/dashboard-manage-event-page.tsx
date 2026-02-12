@@ -51,7 +51,7 @@ import {
 import { useEffect, useState } from "react";
 import { useAuth } from "react-oidc-context";
 import { useNavigate, useParams } from "react-router";
-
+//errors
 interface DateTimeSelectProperties {
   date: Date | undefined;
   setDate: (date: Date) => void;
