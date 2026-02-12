@@ -71,14 +71,18 @@ const DateTimeSelect: React.FC<DateTimeSelectProperties> = ({
 }) => {
   return (
     <div className="flex gap-2 items-center">
-      <Switch checked={enabled} onCheckedChange={setEnabled} />
+      <Switch
+        checked={enabled}
+        onCheckedChange={setEnabled}
+        className="data-[state=checked]:bg-primary data-[state=unchecked]:bg-gray-300 border-2 border-gray-400"
+      />
 
       {enabled && (
         <div className="w-full flex gap-2">
           {/* Date */}
           <Popover>
             <PopoverTrigger asChild>
-              <Button className="bg-gray-900 border-gray-700 border">
+              <Button className="bg-primary text-primary-foreground border border-primary/20 hover:bg-primary/90">
                 <CalendarIcon />
                 {date ? format(date, "PPP") : <span>Pick a Date</span>}
               </Button>
@@ -101,20 +105,19 @@ const DateTimeSelect: React.FC<DateTimeSelectProperties> = ({
 
                   setDate(correctedDate);
                 }}
-                className="rounded-md border shadow"
-              />
-            </PopoverContent>
-          </Popover>
-          {/* Time */}
-          <div className="flex gap-2 items-center">
-            <Input
-              type="time"
-              className="w-[90px] bg-gray-900 text-white border-gray-700 border [&::-webkit-calendar-picker-indicator]:invert"
-              value={time}
-              onChange={(e) => setTime(e.target.value)}
             />
-          </div>
+          </PopoverContent>
+        </Popover>
+        {/* Time */}
+        <div className="flex gap-2 items-center">
+          <Input
+            type="time"
+            className="w-[90px] bg-background text-foreground border border-border"
+            value={time}
+            onChange={(e) => setTime(e.target.value)}
+          />
         </div>
+      </div>
       )}
     </div>
   );
