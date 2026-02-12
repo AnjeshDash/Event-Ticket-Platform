@@ -7,14 +7,11 @@ ENV KC_PROXY=edge
 ENV KC_HTTP_ENABLED=true
 ENV KC_HOSTNAME_STRICT=false
 ENV KC_HOSTNAME=keycloak-auth-service-2kac.onrender.com
-ENV KC_HOSTNAME_PORT=80
-ENV KC_FRONTEND_URL=https://event-ticket-platform-three.vercel.app
+ENV KC_HTTP_PORT=8080
 ENV KC_DB=dev-file
 ENV KC_HEALTH_ENABLED=true
 ENV KC_CACHE=local
 ENV KC_METRICS_ENABLED=false
-ENV KC_BOOTSTRAP_ADMIN_USER=admin
-ENV KC_BOOTSTRAP_ADMIN_PASSWORD=Anjesh@123
 ENV JAVA_OPTS=-Xmx512m
 
 # Skip build for faster startup on free tier
@@ -25,4 +22,4 @@ EXPOSE 8080
 
 # Override the default entrypoint to handle PORT
 ENTRYPOINT ["/opt/keycloak/bin/kc.sh"]
-CMD ["start-dev"]
+CMD ["start", "--http-enabled=true", "--hostname-strict=false", "--proxy=edge", "--http-port=8080"]
