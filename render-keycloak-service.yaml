@@ -40,7 +40,7 @@ services:
       - key: PORT
         value: 8080
       - key: JAVA_OPTS
-        value: -Xmx256m
+        value: -Xmx512m
     healthCheckPath: /
     healthCheckProtocol: http
     healthCheckTimeout: 300
