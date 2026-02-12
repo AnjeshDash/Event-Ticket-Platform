@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useAuth } from "react-oidc-context";
 import { useNavigate } from "react-router";
 import { Button } from "@/components/ui/button";
-import { Sparkles, AlertCircle, Home, Loader, CheckCircle } from "lucide-react";
+import { Sparkles, AlertCircle, Home, Loader, CheckCircle, ArrowLeft } from "lucide-react";
 
 const CallbackPage: React.FC = () => {
   const { isLoading, isAuthenticated, error } = useAuth();
@@ -46,6 +46,18 @@ const CallbackPage: React.FC = () => {
       <div className="text-center">
         <div className="card-3d p-8 max-w-md">
           <div className="space-y-6">
+            {/* Back Button */}
+            <div className="flex justify-start mb-4">
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={() => navigate(-1)}
+                className="interactive"
+              >
+                <ArrowLeft className="w-4 h-4" />
+              </Button>
+            </div>
+            
             {/* Logo/Icon */}
             <div className="flex justify-center mb-6">
               <div className="w-16 h-16 bg-gradient-to-br from-primary to-primary/80 rounded-2xl flex items-center justify-center">

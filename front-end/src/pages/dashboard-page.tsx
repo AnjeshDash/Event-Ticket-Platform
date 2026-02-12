@@ -1,4 +1,6 @@
 import { useRoles } from "@/hooks/use-roles";
+import { Button } from "@/components/ui/button";
+import { ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router";
 
 const DashboardPage: React.FC = () => {
@@ -33,6 +35,17 @@ const DashboardPage: React.FC = () => {
       <div className="text-center">
         <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
         <p className="text-muted-foreground">Redirecting...</p>
+        <div className="mt-4">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => navigate(-1)}
+            className="interactive"
+          >
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Go Back
+          </Button>
+        </div>
       </div>
     </div>
   );

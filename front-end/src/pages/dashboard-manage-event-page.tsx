@@ -40,6 +40,7 @@ import { createEvent, getEvent, updateEvent } from "@/lib/api";
 import { format } from "date-fns";
 import {
   AlertCircle,
+  ArrowLeft,
   CalendarIcon,
   Edit,
   Plus,
@@ -438,13 +439,23 @@ const DashboardManageEventPage: React.FC = () => {
       <div className="container mx-auto px-4 py-8 max-w-4xl">
         {/* Header */}
         <div className="mb-8">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="w-10 h-10 bg-gradient-to-br from-primary to-primary/80 rounded-lg flex items-center justify-center">
-              <Sparkles className="w-5 h-5 text-primary-foreground" />
+          <div className="flex items-center gap-4 mb-4">
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={() => navigate(-1)}
+              className="interactive"
+            >
+              <ArrowLeft className="w-4 h-4" />
+            </Button>
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-gradient-to-br from-primary to-primary/80 rounded-lg flex items-center justify-center">
+                <Sparkles className="w-5 h-5 text-primary-foreground" />
+              </div>
+              <h1 className="text-3xl font-bold gradient-text">
+                {isEditMode ? "Edit Event" : "Create a New Event"}
+              </h1>
             </div>
-            <h1 className="text-3xl font-bold gradient-text">
-              {isEditMode ? "Edit Event" : "Create a New Event"}
-            </h1>
           </div>
           {isEditMode ? (
             <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">

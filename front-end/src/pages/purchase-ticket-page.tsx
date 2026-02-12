@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { purchaseTicket } from "@/lib/api";
-import { CheckCircle, CreditCard, Sparkles, Shield, Lock } from "lucide-react";
+import { ArrowLeft, CheckCircle, CreditCard, Sparkles, Shield, Lock } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useAuth } from "react-oidc-context";
 import { useNavigate, useParams } from "react-router";
@@ -73,6 +73,14 @@ const PurchaseTicketPage: React.FC = () => {
           {/* Header */}
           <div className="text-center mb-8">
             <div className="flex items-center justify-center gap-3 mb-4">
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={() => navigate(-1)}
+                className="interactive absolute left-0"
+              >
+                <ArrowLeft className="w-4 h-4" />
+              </Button>
               <div className="w-12 h-12 bg-gradient-to-br from-primary to-primary/80 rounded-lg flex items-center justify-center">
                 <Sparkles className="w-6 h-6 text-primary-foreground" />
               </div>

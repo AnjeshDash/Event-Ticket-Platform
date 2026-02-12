@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { useAuth } from "react-oidc-context";
 import { useNavigate } from "react-router";
-import { Sparkles, Calendar, Users, Ticket, ArrowRight, LogIn, LogOut } from "lucide-react";
+import { Sparkles, Calendar, Users, Ticket, ArrowRight, LogIn, LogOut, ArrowLeft } from "lucide-react";
 
 const OrganizersLandingPage: React.FC = () => {
   const { isAuthenticated, isLoading, signinRedirect, signoutRedirect } =
@@ -68,6 +68,14 @@ const OrganizersLandingPage: React.FC = () => {
             {/* Header */}
             <div className="space-y-4">
               <div className="flex items-center gap-3">
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={() => navigate(-1)}
+                  className="interactive"
+                >
+                  <ArrowLeft className="w-4 h-4" />
+                </Button>
                 <div className="w-12 h-12 bg-gradient-to-br from-primary to-primary/80 rounded-lg flex items-center justify-center">
                   <Sparkles className="w-6 h-6 text-primary-foreground" />
                 </div>

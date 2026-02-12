@@ -2,7 +2,7 @@ import { useAuth } from "react-oidc-context";
 import { Button } from "../components/ui/button";
 import { useNavigate } from "react-router";
 import { Input } from "@/components/ui/input";
-import { AlertCircle, Search, Sparkles, Calendar, MapPin, Users } from "lucide-react";
+import { AlertCircle, Search, Sparkles, Calendar } from "lucide-react";
 import { useEffect, useState } from "react";
 import { PublishedEventSummary, SpringBootPagination } from "@/domain/domain";
 import { listPublishedEvents, searchPublishedEvents } from "@/lib/api";
@@ -200,37 +200,6 @@ const AttendeeLandingPage: React.FC = () => {
                 <div className="text-3xl font-bold gradient-text">100+</div>
                 <div className="text-sm text-muted-foreground">Cities</div>
               </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Features Section */}
-      <section className="py-16 bg-card/50">
-        <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="text-center card-3d p-6 bg-card rounded-2xl border border-border">
-              <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mx-auto mb-4">
-                <Calendar className="w-6 h-6 text-primary" />
-              </div>
-              <h3 className="text-xl font-semibold mb-2">Upcoming Events</h3>
-              <p className="text-muted-foreground">Browse through our curated selection of upcoming events</p>
-            </div>
-            
-            <div className="text-center card-3d p-6 bg-card rounded-2xl border border-border">
-              <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mx-auto mb-4">
-                <MapPin className="w-6 h-6 text-primary" />
-              </div>
-              <h3 className="text-xl font-semibold mb-2">Multiple Venues</h3>
-              <p className="text-muted-foreground">Find events happening at venues near you</p>
-            </div>
-            
-            <div className="text-center card-3d p-6 bg-card rounded-2xl border border-border">
-              <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mx-auto mb-4">
-                <Users className="w-6 h-6 text-primary" />
-              </div>
-              <h3 className="text-xl font-semibold mb-2">Join Community</h3>
-              <p className="text-muted-foreground">Connect with other event enthusiasts</p>
             </div>
           </div>
         </div>

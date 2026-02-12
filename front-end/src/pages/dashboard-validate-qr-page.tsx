@@ -6,13 +6,15 @@ import {
   TicketValidationMethod,
   TicketValidationStatus,
 } from "@/domain/domain";
-import { AlertCircle, Check, X, Sparkles, QrCode, Keyboard } from "lucide-react";
+import { AlertCircle, ArrowLeft, Check, X, Sparkles, QrCode, Keyboard } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { validateTicket } from "@/lib/api";
 import { useAuth } from "react-oidc-context";
+import { useNavigate } from "react-router";
 
 const DashboardValidateQrPage: React.FC = () => {
   const { isLoading, user } = useAuth();
+  const navigate = useNavigate();
   const [isManual, setIsManual] = useState(false);
   const [data, setData] = useState<string | undefined>();
   const [error, setError] = useState<string | undefined>();
@@ -63,6 +65,14 @@ const DashboardValidateQrPage: React.FC = () => {
           {/* Header */}
           <div className="text-center mb-8">
             <div className="flex items-center justify-center gap-3 mb-4">
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={() => navigate(-1)}
+                className="interactive absolute left-0"
+              >
+                <ArrowLeft className="w-4 h-4" />
+              </Button>
               <div className="w-12 h-12 bg-gradient-to-br from-primary to-primary/80 rounded-lg flex items-center justify-center">
                 <Sparkles className="w-6 h-6 text-primary-foreground" />
               </div>

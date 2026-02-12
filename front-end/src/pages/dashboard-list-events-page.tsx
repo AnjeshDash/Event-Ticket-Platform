@@ -26,6 +26,7 @@ import {
 import { deleteEvent, listEvents } from "@/lib/api";
 import {
   AlertCircle,
+  ArrowLeft,
   Calendar,
   Clock,
   Edit,
@@ -35,10 +36,11 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useAuth } from "react-oidc-context";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 const DashboardListEventsPage: React.FC = () => {
   const { isLoading, user } = useAuth();
+  const navigate = useNavigate();
   const [events, setEvents] = useState<
     SpringBootPagination<EventSummary> | undefined
   >();
@@ -165,9 +167,19 @@ const DashboardListEventsPage: React.FC = () => {
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
-          <div>
-            <h1 className="text-3xl font-bold gradient-text mb-2">Your Events</h1>
-            <p className="text-muted-foreground">Manage and track your created events</p>
+          <div className="flex items-center gap-4">
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={() => navigate(-1)}
+              className="interactive"
+            >
+              <ArrowLeft className="w-4 h-4" />
+            </Button>
+            <div>
+              <h1 className="text-3xl font-bold gradient-text mb-2">Your Events</h1>
+              <p className="text-muted-foreground">Manage and track your created events</p>
+            </div>
           </div>
           <div>
             <Link to="/dashboard/events/create">

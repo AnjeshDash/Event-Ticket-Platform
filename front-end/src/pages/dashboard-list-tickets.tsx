@@ -1,16 +1,18 @@
 import NavBar from "@/components/nav-bar";
 import { SimplePagination } from "@/components/simple-pagination";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { SpringBootPagination, TicketSummary } from "@/domain/domain";
 import { listTickets } from "@/lib/api";
-import { AlertCircle, DollarSign, Tag, Ticket, Sparkles } from "lucide-react";
+import { AlertCircle, ArrowLeft, DollarSign, Tag, Ticket, Sparkles } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useAuth } from "react-oidc-context";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 const DashboardListTickets: React.FC = () => {
   const { isLoading, user } = useAuth();
+  const navigate = useNavigate();
   const [tickets, setTickets] = useState<SpringBootPagination<TicketSummary> | undefined>();
   const [error, setError] = useState<string | undefined>();
   const [page, setPage] = useState(0);
@@ -49,11 +51,21 @@ const DashboardListTickets: React.FC = () => {
       <NavBar />
       <div className="container mx-auto px-4 py-8">
         <div className="mb-8">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="w-10 h-10 bg-gradient-to-br from-primary to-primary/80 rounded-lg flex items-center justify-center">
-              <Sparkles className="w-5 h-5 text-primary-foreground" />
+          <div className="flex items-center gap-4 mb-4">
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={() => navigate(-1)}
+              className="interactive"
+            >
+              <ArrowLeft className="w-4 h-4" />
+            </Button>
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-gradient-to-br from-primary to-primary/80 rounded-lg flex items-center justify-center">
+                <Sparkles className="w-5 h-5 text-primary-foreground" />
+              </div>
+              <h1 className="text-3xl font-bold gradient-text">Your Tickets</h1>
             </div>
-            <h1 className="text-3xl font-bold gradient-text">Your Tickets</h1>
           </div>
           <p className="text-muted-foreground">Tickets you have purchased</p>
         </div>

@@ -1,10 +1,11 @@
 import { TicketDetails, TicketStatus } from "@/domain/domain";
+import { Button } from "@/components/ui/button";
 import { getTicket, getTicketQr } from "@/lib/api";
 import { format } from "date-fns";
-import { Calendar, DollarSign, MapPin, Tag, Sparkles } from "lucide-react";
+import { ArrowLeft, Calendar, DollarSign, MapPin, Tag, Sparkles } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useAuth } from "react-oidc-context";
-import { useParams } from "react-router";
+import { useParams, useNavigate } from "react-router";
 
 const DashboardViewTicketPage: React.FC = () => {
   const [ticket, setTicket] = useState<TicketDetails | undefined>();
@@ -14,6 +15,7 @@ const DashboardViewTicketPage: React.FC = () => {
 
   const { id } = useParams();
   const { isLoading, user } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (isLoading || !user?.access_token || !id) {
@@ -90,6 +92,14 @@ const DashboardViewTicketPage: React.FC = () => {
           {/* Header */}
           <div className="text-center mb-8">
             <div className="flex items-center justify-center gap-3 mb-4">
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={() => navigate(-1)}
+                className="interactive absolute left-0"
+              >
+                <ArrowLeft className="w-4 h-4" />
+              </Button>
               <div className="w-12 h-12 bg-gradient-to-br from-primary to-primary/80 rounded-lg flex items-center justify-center">
                 <Sparkles className="w-6 h-6 text-primary-foreground" />
               </div>

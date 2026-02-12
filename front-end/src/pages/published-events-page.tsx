@@ -7,7 +7,7 @@ import {
   PublishedEventTicketTypeDetails,
 } from "@/domain/domain";
 import { getPublishedEvent } from "@/lib/api";
-import { AlertCircle, MapPin, Sparkles, Calendar, DollarSign, Ticket } from "lucide-react";
+import { AlertCircle, ArrowLeft, MapPin, Sparkles, Calendar, DollarSign, Ticket } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useAuth } from "react-oidc-context";
 import { Link, useNavigate, useParams } from "react-router";
@@ -117,6 +117,14 @@ const PublishedEventsPage: React.FC = () => {
           {/* Event Info */}
           <div className="space-y-6">
             <div className="flex items-center gap-3 mb-4">
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={() => navigate(-1)}
+                className="interactive"
+              >
+                <ArrowLeft className="w-4 h-4" />
+              </Button>
               <div className="w-12 h-12 bg-gradient-to-br from-primary to-primary/80 rounded-lg flex items-center justify-center">
                 <Sparkles className="w-6 h-6 text-primary-foreground" />
               </div>
