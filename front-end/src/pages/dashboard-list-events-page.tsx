@@ -98,15 +98,15 @@ const DashboardListEventsPage: React.FC = () => {
   const formatStatusBadge = (status: EventStatusEnum) => {
     switch (status) {
       case EventStatusEnum.DRAFT:
-        return "bg-gray-700 text-gray-200";
+        return "bg-muted text-muted-foreground";
       case EventStatusEnum.PUBLISHED:
-        return "bg-green-700 text-green-100";
+        return "bg-primary/10 text-primary border border-primary/20";
       case EventStatusEnum.CANCELLED:
-        return "bg-red-700 text-red-100";
+        return "bg-destructive/10 text-destructive border border-destructive/20";
       case EventStatusEnum.COMPLETED:
-        return "bg-blue-700 text-blue-100";
+        return "bg-accent/10 text-accent-foreground border border-accent/20";
       default:
-        return "bg-gray-700 text-gray-200";
+        return "bg-muted text-muted-foreground";
     }
   };
 
@@ -146,30 +146,32 @@ const DashboardListEventsPage: React.FC = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-black text-white">
-        <Alert variant="destructive" className="bg-gray-900 border-red-700">
-          <AlertCircle className="h-4 w-4" />
-          <AlertTitle>Error</AlertTitle>
-          <AlertDescription>{error}</AlertDescription>
-        </Alert>
+      <div className="min-h-screen bg-background text-foreground">
+        <div className="container mx-auto px-4 py-8">
+          <Alert variant="destructive" className="max-w-2xl mx-auto card-3d">
+            <AlertCircle className="h-4 w-4" />
+            <AlertTitle>Error</AlertTitle>
+            <AlertDescription>{error}</AlertDescription>
+          </Alert>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="bg-black min-h-screen text-white">
+    <div className="min-h-screen bg-background text-foreground">
       <NavBar />
 
-      <div className="max-w-lg mx-auto px-4">
-        {/* Title */}
-        <div className="py-8 px-4 flex justify-between">
+      <div className="container mx-auto px-4 py-8">
+        {/* Header */}
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
           <div>
-            <h1 className="text-2xl font-bold">Your Events</h1>
-            <p>Events you have created</p>
+            <h1 className="text-3xl font-bold gradient-text mb-2">Your Events</h1>
+            <p className="text-muted-foreground">Manage and track your created events</p>
           </div>
           <div>
             <Link to="/dashboard/events/create">
-              <Button className="bg-purple-700 hover:bg-purple-500 cursor-pointer">
+              <Button className="interactive gradient">
                 Create Event
               </Button>
             </Link>
@@ -177,14 +179,14 @@ const DashboardListEventsPage: React.FC = () => {
         </div>
 
         {/* Event Cards */}
-        <div className="space-y-2">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {events?.content.map((eventItem) => (
-            <Card className="bg-gray-900 border-gray-700 text-white">
-              <CardHeader>
-                <div className="flex justify-between">
-                  <h3 className="font-bold text-xl">{eventItem.name}</h3>
+            <Card key={eventItem.id} className="card-3d overflow-hidden">
+              <CardHeader className="pb-4">
+                <div className="flex justify-between items-start">
+                  <h3 className="font-bold text-xl text-foreground line-clamp-2">{eventItem.name}</h3>
                   <span
-                    className={`flex items-center px-2 py-1 rounded-lg text-xs ${formatStatusBadge(eventItem.status)}`}
+                    className={`flex items-center px-3 py-1 rounded-full text-xs font-medium ${formatStatusBadge(eventItem.status)}`}
                   >
                     {eventItem.status}
                   </span>
@@ -192,101 +194,108 @@ const DashboardListEventsPage: React.FC = () => {
               </CardHeader>
               <CardContent className="space-y-4">
                 {/* Event Start & End */}
-                <div className="flex space-x-2">
-                  <Calendar className="h-5 w-5 text-gray-400" />
+                <div className="flex items-start gap-3">
+                  <Calendar className="h-5 w-5 text-muted-foreground mt-0.5 flex-shrink-0" />
                   <div>
-                    <p className="font-medium">
-                      {formatDate(eventItem.start)} to{" "}
-                      {formatDate(eventItem.end)}
+                    <p className="font-medium text-foreground">
+                      {formatDate(eventItem.start)} to {formatDate(eventItem.end)}
                     </p>
-                    <p className="text-gray-400">
-                      {formatTime(eventItem.start)} -{" "}
-                      {formatTime(eventItem.end)}
+                    <p className="text-muted-foreground text-sm">
+                      {formatTime(eventItem.start)} - {formatTime(eventItem.end)}
                     </p>
                   </div>
                 </div>
+                
                 {/* Sales start and end */}
-                <div className="flex space-x-2">
-                  <Clock className="h-5 w-5 text-gray-400" />
+                <div className="flex items-start gap-3">
+                  <Clock className="h-5 w-5 text-muted-foreground mt-0.5 flex-shrink-0" />
                   <div>
-                    <h4 className="font-medium">Sales Period</h4>
-                    <p className="text-gray-400">
-                      {formatDate(eventItem.salesStart)} to{" "}
-                      {formatDate(eventItem.salesEnd)}
+                    <h4 className="font-medium text-foreground">Sales Period</h4>
+                    <p className="text-muted-foreground text-sm">
+                      {formatDate(eventItem.salesStart)} to {formatDate(eventItem.salesEnd)}
                     </p>
                   </div>
                 </div>
-                <div className="flex space-x-2">
-                  <MapPin className="h-5 w-5 text-gray-400" />
+                
+                <div className="flex items-start gap-3">
+                  <MapPin className="h-5 w-5 text-muted-foreground mt-0.5 flex-shrink-0" />
                   <div>
-                    <p className="font-medium">{eventItem.venue}</p>
+                    <p className="font-medium text-foreground">{eventItem.venue}</p>
                   </div>
                 </div>
-                <div className="flex items-center space-x-2">
-                  <Tag className="h-5 w-5 text-gray-400" />
+                
+                <div className="flex items-start gap-3">
+                  <Tag className="h-5 w-5 text-muted-foreground mt-0.5 flex-shrink-0" />
                   <div>
-                    <h4 className="font-medium">Ticket Types</h4>
-                    <ul>
+                    <h4 className="font-medium text-foreground">Ticket Types</h4>
+                    <ul className="space-y-1">
                       {eventItem.ticketTypes.map((ticketType) => (
                         <li
                           key={ticketType.id}
-                          className="flex gap-2 text-gray-400"
+                          className="flex justify-between items-center text-sm text-muted-foreground"
                         >
                           <span>{ticketType.name}</span>
-                          <span>${ticketType.price}</span>
+                          <span className="font-medium text-foreground">${ticketType.price}</span>
                         </li>
                       ))}
                     </ul>
                   </div>
                 </div>
               </CardContent>
-              <CardFooter className="flex justify-end gap-2">
+              <CardFooter className="flex justify-end gap-3 pt-4">
                 <Link to={`/dashboard/events/update/${eventItem.id}`}>
                   <Button
                     type="button"
-                    className="bg-gray-700 hover:bg-gray-500 cursor-pointer"
+                    variant="outline"
+                    className="interactive"
                   >
-                    <Edit />
+                    <Edit className="w-4 h-4 mr-2" />
+                    Edit
                   </Button>
                 </Link>
                 <Button
                   type="button"
-                  className="bg-red-700/80 hover:bg-red-500 cursor-pointer"
+                  variant="destructive"
+                  className="interactive"
                   onClick={() => handleOpenDeleteEventDialog(eventItem)}
                 >
-                  <Trash />
+                  <Trash className="w-4 h-4 mr-2" />
+                  Delete
                 </Button>
               </CardFooter>
             </Card>
           ))}
         </div>
       </div>
+      
+      {/* Pagination */}
       <div className="flex justify-center py-8">
         {events && (
           <SimplePagination pagination={events} onPageChange={setPage} />
         )}
       </div>
+      
+      {/* Delete Dialog */}
       <AlertDialog open={dialogOpen}>
-        <AlertDialogContent>
+        <AlertDialogContent className="card-3d">
           <AlertDialogHeader>
             <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
             <AlertDialogDescription>
-              This will delete your event '{eventToDelete?.name}' and cannot be
-              undone.
+              This will delete your event '{eventToDelete?.name}' and cannot be undone.
             </AlertDialogDescription>
           </AlertDialogHeader>
           {deleteEventError && (
-            <Alert variant="destructive" className="border-red-700">
+            <Alert variant="destructive" className="card-3d">
               <AlertCircle className="h-4 w-4" />
               <AlertTitle>Error</AlertTitle>
               <AlertDescription>{deleteEventError}</AlertDescription>
             </Alert>
           )}
           <AlertDialogFooter>
-            <AlertDialogCancel onClick={handleCancelDeleteEventDialog}>
+            <AlertDialogCancel onClick={handleCancelDeleteEventDialog} className="interactive">
               Cancel
             </AlertDialogCancel>
-            <AlertDialogAction onClick={() => handleDeleteEvent()}>
+            <AlertDialogAction onClick={() => handleDeleteEvent()} className="interactive">
               Continue
             </AlertDialogAction>
           </AlertDialogFooter>

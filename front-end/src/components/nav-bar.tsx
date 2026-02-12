@@ -8,7 +8,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import { LogOut } from "lucide-react";
+import { LogOut, Sparkles } from "lucide-react";
 import { useRoles } from "@/hooks/use-roles";
 import { Link } from "react-router";
 
@@ -17,48 +17,66 @@ const NavBar: React.FC = () => {
   const { isOrganizer } = useRoles();
 
   return (
-    <div className="bg-gray-950 border-b border-gray-800 text-white">
-      <div className="container mx-auto p-4">
+    <header className="sticky top-0 z-50 glass border-b border-border/50">
+      <div className="container mx-auto px-4 py-4">
         <div className="flex justify-between items-center">
-          <div className="flex gap-10 md:gap-20 items-center">
-            <h1 className="text-xl font-bold">Event Ticket Platform</h1>
-            <div className="text-gray-300 flex gap-8">
-              {isOrganizer && <Link to="/dashboard/events">Events</Link>}
-              <Link to="/dashboard/tickets">Tickets</Link>
+          <div className="flex items-center gap-8">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 bg-gradient-to-br from-primary to-primary/80 rounded-lg flex items-center justify-center">
+                <Sparkles className="w-5 h-5 text-primary-foreground" />
+              </div>
+              <span className="text-xl font-bold gradient-text">EventHub</span>
             </div>
+            
+            <nav className="hidden md:flex items-center gap-6">
+              {isOrganizer && (
+                <Link 
+                  to="/dashboard/events" 
+                  className="text-muted-foreground hover:text-foreground transition-colors duration-200 font-medium"
+                >
+                  Events
+                </Link>
+              )}
+              <Link 
+                to="/dashboard/tickets" 
+                className="text-muted-foreground hover:text-foreground transition-colors duration-200 font-medium"
+              >
+                Tickets
+              </Link>
+            </nav>
           </div>
 
           <DropdownMenu>
-            <DropdownMenuTrigger>
-              <Avatar className="h-8 w-8">
-                <AvatarFallback className="bg-gray-700">
+            <DropdownMenuTrigger asChild>
+              <Avatar className="h-9 w-9 cursor-pointer interactive">
+                <AvatarFallback className="bg-primary/10 text-primary font-medium">
                   {user?.profile?.preferred_username?.slice(0, 2).toUpperCase()}
                 </AvatarFallback>
               </Avatar>
             </DropdownMenuTrigger>
             <DropdownMenuContent
-              className="w-56 bg-gray-900 border-gray-700 text-white"
+              className="w-56 card-3d border-border"
               align="end"
             >
               <DropdownMenuLabel className="font-normal">
-                <p className="text-sm font-medium">
+                <p className="text-sm font-medium text-foreground">
                   {user?.profile?.preferred_username}
                 </p>
-                <p className="text-sm text-gray-400">{user?.profile?.email}</p>
+                <p className="text-sm text-muted-foreground">{user?.profile?.email}</p>
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem
-                className="hover:bg-gray-800"
+                className="interactive cursor-pointer"
                 onClick={() => signoutRedirect()}
               >
-                <LogOut />
+                <LogOut className="w-4 h-4 mr-2" />
                 <span>Log Out</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
       </div>
-    </div>
+    </header>
   );
 };
 

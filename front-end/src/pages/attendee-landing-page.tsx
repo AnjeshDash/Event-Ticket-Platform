@@ -70,6 +70,7 @@ const AttendeeLandingPage: React.FC = () => {
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
+    setPage(0); // Reset to first page when searching
     queryPublishedEvents();
   };
 
