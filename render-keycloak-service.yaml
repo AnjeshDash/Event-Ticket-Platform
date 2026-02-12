@@ -22,9 +22,21 @@ services:
       - key: KC_HOSTNAME_PORT
         value: 80
       - key: KC_FRONTEND_URL
-        value: https://your-frontend-url.onrender.com
+        value: https://event-ticket-platform-three.vercel.app
       - key: KC_DB
         value: dev-file
+      - key: KC_HTTP_PORT
+        value: 8080
+      - key: KC_HEALTH_ENABLED
+        value: true
+      - key: KC_CACHE
+        value: local
+      - key: KC_METRICS_ENABLED
+        value: false
+      - key: KC_BOOTSTRAP_ADMIN_USER
+        value: admin
+      - key: KC_BOOTSTRAP_ADMIN_PASSWORD
+        value: Anjesh@123
       - key: PORT
         value: 8080
       - key: JAVA_OPTS
