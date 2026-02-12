@@ -78,46 +78,67 @@ const DateTimeSelect: React.FC<DateTimeSelectProperties> = ({
       />
 
       {enabled && (
-        <div className="w-full flex gap-2">
+        <div className="w-full flex gap-3">
           {/* Date */}
           <Popover>
             <PopoverTrigger asChild>
-              <Button className="bg-primary text-primary-foreground border border-primary/20 hover:bg-primary/90">
-                <CalendarIcon />
+              <Button className="bg-primary/10 text-primary-foreground border border-border/50 hover:bg-primary/20 transition-colors duration-200 px-4 py-2 h-10">
+                <CalendarIcon className="w-4 h-4" />
                 {date ? format(date, "PPP") : <span>Pick a Date</span>}
               </Button>
             </PopoverTrigger>
             <PopoverContent className="w-auto p-0" align="start">
-              <Calendar
-                mode="single"
-                selected={date}
-                onSelect={(selectedDate) => {
-                  if (!selectedDate) {
-                    return;
-                  }
-                  const displayedYear = selectedDate.getFullYear();
-                  const displayedMonth = selectedDate.getMonth();
-                  const displayedDay = selectedDate.getDate();
+              <div className="bg-background border border-border rounded-lg shadow-lg">
+                <Calendar
+                  mode="single"
+                  selected={date}
+                  onSelect={(selectedDate) => {
+                    if (!selectedDate) {
+                      return;
+                    }
+                    const displayedYear = selectedDate.getFullYear();
+                    const displayedMonth = selectedDate.getMonth();
+                    const displayedDay = selectedDate.getDate();
 
-                  const correctedDate = new Date(
-                    Date.UTC(displayedYear, displayedMonth, displayedDay),
-                  );
+                    const correctedDate = new Date(
+                      Date.UTC(displayedYear, displayedMonth, displayedDay),
+                    );
 
-                  setDate(correctedDate);
-                }}
+                    setDate(correctedDate);
+                  }}
+                  className="rounded-lg border-0"
+                  classNames={{
+                    months: "text-sm font-semibold text-foreground mb-3",
+                    weekdays: "text-xs text-muted-foreground mb-2",
+                    weekday: "h-8 w-8 text-center text-sm font-medium text-foreground rounded-md hover:bg-muted/50 transition-colors",
+                    day: "h-8 w-8 text-sm p-1 rounded-md hover:bg-muted/50 transition-colors focus:ring-2 focus:ring-primary/20 focus:ring-offset-0",
+                    selected: "bg-primary text-primary-foreground hover:bg-primary/90 focus:ring-2 focus:ring-primary/20 focus:ring-offset-0",
+                    today: "bg-muted/50 text-foreground font-semibold",
+                    outside: "text-muted-foreground/50",
+                    disabled: "text-muted-foreground/30 cursor-not-allowed",
+                    nav: "flex items-center justify-between p-2",
+                    nav_button: "h-8 w-8 rounded-md hover:bg-muted/50 transition-colors",
+                    caption: "text-xs text-muted-foreground mt-1",
+                    table: "w-full border-collapse space-x-1",
+                    head_row: "flex",
+                    head_cell: "text-muted-foreground rounded-md w-8 font-normal text-sm",
+                    row: "flex w-full mt-2",
+                    cell: "relative p-0 text-center text-sm focus-within:relative focus-within:z-20 [&:has([aria-selected])]:bg-accent [&:has([aria-selected].day-range-end)]:rounded-r-md [&:has([aria-selected].day-range-start)]:rounded-l-md first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md",
+                  }}
+                />
+              </div>
+            </PopoverContent>
+          </Popover>
+          {/* Time */}
+          <div className="flex gap-2 items-center">
+            <Input
+              type="time"
+              className="w-[90px] bg-background text-foreground border-border"
+              value={time}
+              onChange={(e) => setTime(e.target.value)}
             />
-          </PopoverContent>
-        </Popover>
-        {/* Time */}
-        <div className="flex gap-2 items-center">
-          <Input
-            type="time"
-            className="w-[90px] bg-background text-foreground border border-border"
-            value={time}
-            onChange={(e) => setTime(e.target.value)}
-          />
+          </div>
         </div>
-      </div>
       )}
     </div>
   );
