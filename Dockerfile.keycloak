@@ -6,12 +6,16 @@ ENV KEYCLOAK_ADMIN_PASSWORD=Anjesh@123
 ENV KC_PROXY=edge
 ENV KC_HTTP_ENABLED=true
 ENV KC_HOSTNAME_STRICT=false
+ENV KC_HOSTNAME=keycloak-auth-service-2kac.onrender.com
+ENV KC_HOSTNAME_PORT=80
+ENV KC_FRONTEND_URL=https://your-frontend-url.onrender.com
 ENV KC_DB=dev-file
 ENV KC_HEALTH_ENABLED=true
 ENV KC_CACHE=local
 ENV KC_METRICS_ENABLED=false
 ENV KC_BOOTSTRAP_ADMIN_USER=admin
 ENV KC_BOOTSTRAP_ADMIN_PASSWORD=Anjesh@123
+ENV JAVA_OPTS=-Xmx256m
 
 # Skip build for faster startup on free tier
 # RUN /opt/keycloak/bin/kc.sh build

@@ -17,11 +17,19 @@ services:
         value: true
       - key: KC_HOSTNAME_STRICT
         value: false
+      - key: KC_HOSTNAME
+        value: keycloak-auth-service-2kac.onrender.com
+      - key: KC_HOSTNAME_PORT
+        value: 80
+      - key: KC_FRONTEND_URL
+        value: https://your-frontend-url.onrender.com
       - key: KC_DB
         value: dev-file
       - key: PORT
         value: 8080
-    healthCheckPath: /health
+      - key: JAVA_OPTS
+        value: -Xmx256m
+    healthCheckPath: /
     healthCheckProtocol: http
     healthCheckTimeout: 300
     autoDeploy: false
