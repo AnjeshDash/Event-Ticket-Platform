@@ -1,7 +1,7 @@
 import { TicketDetails, TicketStatus } from "@/domain/domain";
 import { getTicket, getTicketQr } from "@/lib/api";
 import { format } from "date-fns";
-import { Calendar, DollarSign, MapPin, Tag } from "lucide-react";
+import { Calendar, DollarSign, MapPin, Tag, Sparkles } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useAuth } from "react-oidc-context";
 import { useParams } from "react-router";
@@ -59,11 +59,11 @@ const DashboardViewTicketPage: React.FC = () => {
   const getStatusColor = (status: TicketStatus) => {
     switch (status) {
       case TicketStatus.PURCHASED:
-        return "text-green-400";
+        return "bg-green-500/10 text-green-600 border-green-500/20";
       case TicketStatus.CANCELLED:
-        return "text-red-400";
+        return "bg-destructive/10 text-destructive border-destructive/20";
       default:
-        return "text-gray-400";
+        return "bg-muted text-muted-foreground border-border";
     }
   };
 
@@ -84,83 +84,115 @@ const DashboardViewTicketPage: React.FC = () => {
   }
 
   return (
-    <div className="bg-black min-h-screen text-white flex items-center justify-center p-4">
-      <div className="w-full max-w-md">
-        <div className="relative bg-gradient-to-br from-purple-900 via-purple-800 to-indigo-900 rounded-3xl p-8 shadow-2xl">
-          {/* Status */}
-          <div className="bg-black/30 backdrop-blur-sm px-3 py-1 rounded-full mb-8 text-center">
-            <span
-              className={`text-sm font-medium ${getStatusColor(ticket.status)}`}
-            >
-              {ticket?.status}
-            </span>
-          </div>
-
-          <div className="mb-2">
-            <h1 className="text-2xl font-bold mb-2">{ticket.eventName}</h1>
-            <div className="flex items-center gap-2 text-purple-200">
-              <MapPin className="w-4" />
-              <span>{ticket.eventVenue}</span>
+    <div className="min-h-screen bg-background text-foreground">
+      <div className="container mx-auto px-4 py-8">
+        <div className="max-w-2xl mx-auto">
+          {/* Header */}
+          <div className="text-center mb-8">
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <div className="w-12 h-12 bg-gradient-to-br from-primary to-primary/80 rounded-lg flex items-center justify-center">
+                <Sparkles className="w-6 h-6 text-primary-foreground" />
+              </div>
+              <h1 className="text-4xl font-bold gradient-text">Ticket Details</h1>
             </div>
+            <p className="text-muted-foreground">Your event ticket information</p>
           </div>
 
-          <div className="flex items-center gap-2 text-purple-300 mb-8">
-            <Calendar className="w-4 text-purple-200" />
-            <div>
-              {formatDate(ticket.eventStart)} -{" "}
-              {formatDate(ticket.eventEnd)}
-            </div>
-          </div>
+          {/* Main Card */}
+          <div className="card-3d overflow-hidden">
+            <div className="bg-gradient-to-br from-primary/5 via-background to-secondary/5 p-8">
+              {/* Status Badge */}
+              <div className="flex justify-center mb-8">
+                <span className={`px-4 py-2 rounded-full text-sm font-medium border ${getStatusColor(ticket.status)}`}>
+                  {ticket?.status}
+                </span>
+              </div>
 
-          <div className="flex justify-center mb-8">
-            <div className="bg-white p-4 rounded-2xl shadow-lg">
-              <div className="w-32 h-32 flex items-center justify-center">
-                {/* Loading */}
-                {isQrLoading && (
-                  <div className="text-xs text-center p2">
-                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 mb-2 mx-auto"></div>
-                    <div className="text-gray-800">Loading QR...</div>
+              {/* Event Info */}
+              <div className="text-center mb-8">
+                <h2 className="text-3xl font-bold text-foreground mb-3">{ticket.eventName}</h2>
+                <div className="flex items-center justify-center gap-2 text-muted-foreground">
+                  <MapPin className="w-5 h-5" />
+                  <span className="text-lg">{ticket.eventVenue}</span>
+                </div>
+              </div>
+
+              {/* Date Info */}
+              <div className="flex items-center justify-center gap-2 text-muted-foreground mb-8">
+                <Calendar className="w-5 h-5" />
+                <div className="text-center">
+                  <p className="font-medium text-foreground">
+                    {formatDate(ticket.eventStart)} - {formatDate(ticket.eventEnd)}
+                  </p>
+                </div>
+              </div>
+
+              {/* QR Code Section */}
+              <div className="flex justify-center mb-8">
+                <div className="bg-card p-6 rounded-2xl border border-border shadow-lg">
+                  <div className="w-40 h-40 flex items-center justify-center">
+                    {/* Loading State */}
+                    {isQrLoading && (
+                      <div className="text-center">
+                        <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-3"></div>
+                        <p className="text-sm text-muted-foreground">Loading QR...</p>
+                      </div>
+                    )}
+                    
+                    {/* Error State */}
+                    {error && (
+                      <div className="text-destructive text-sm text-center p-3">
+                        <div className="text-2xl mb-2">⚠️</div>
+                        <p>{error}</p>
+                      </div>
+                    )}
+                    
+                    {/* QR Code Display */}
+                    {qrCodeUrl && !isQrLoading && !error && (
+                      <img
+                        src={qrCodeUrl}
+                        alt="QR Code for event"
+                        className="w-full h-full object-contain rounded-lg"
+                      />
+                    )}
                   </div>
-                )}
-                {/* error */}
-                {error && (
-                  <div className="text-red-400 text-sm text-center p-2">
-                    <div className="mb-1">⚠️</div>
-                    {error}
+                </div>
+              </div>
+
+              {/* Instructions */}
+              <div className="text-center mb-8">
+                <p className="text-muted-foreground text-sm">
+                  Present this QR code at the venue for entry
+                </p>
+              </div>
+
+              {/* Ticket Details */}
+              <div className="space-y-4 mb-8">
+                <div className="flex items-center gap-3">
+                  <Tag className="w-5 h-5 text-muted-foreground" />
+                  <div>
+                    <h4 className="font-medium text-foreground">Ticket Type</h4>
+                    <p className="text-muted-foreground">{ticket.description}</p>
                   </div>
-                )}
-                {/* Display QR */}
-                {qrCodeUrl && !isQrLoading && !error && (
-                  <img
-                    src={qrCodeUrl}
-                    alt="QR Code for event"
-                    className="w-full h-full object-contain rounded-large"
-                  />
-                )}
+                </div>
+                
+                <div className="flex items-center gap-3">
+                  <DollarSign className="w-5 h-5 text-muted-foreground" />
+                  <div>
+                    <h4 className="font-medium text-foreground">Price</h4>
+                    <p className="text-2xl font-bold text-foreground">${ticket.price}</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Ticket ID */}
+              <div className="text-center">
+                <h4 className="text-sm font-medium text-muted-foreground mb-2">Ticket ID</h4>
+                <p className="text-foreground font-mono text-lg bg-muted/50 px-4 py-2 rounded-lg inline-block">
+                  {ticket.id}
+                </p>
               </div>
             </div>
-          </div>
-
-          <div className="text-center mb-8">
-            <p className="text-purple-200 text-sm">
-              Present this QR code at the venue for entry
-            </p>
-          </div>
-
-          <div className="space-y-2 mb-8">
-            <div className="flex items-center gap-2">
-              <Tag className="w-5 text-purple-200" />
-              <span className="font-semibold">{ticket.description}</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <DollarSign className="w-5 text-purple-200" />
-              <span className="font-semibold">{ticket.price}</span>
-            </div>
-          </div>
-
-          <div className="text-center mb-2">
-            <h4 className="text-sm font-semibold font-mono">Ticket ID</h4>
-            <p className="text-purple-200 text-sm font-mono">{ticket.id}</p>
           </div>
         </div>
       </div>

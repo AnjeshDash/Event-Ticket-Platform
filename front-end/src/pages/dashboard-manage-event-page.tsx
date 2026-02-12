@@ -45,6 +45,7 @@ import {
   Plus,
   Ticket,
   Trash,
+  Sparkles,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useAuth } from "react-oidc-context";
@@ -432,199 +433,210 @@ const DashboardManageEventPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-background text-foreground">
       <NavBar />
-      <div className="container mx-auto px-4 py-8 max-w-xl">
-        <div className="mb-6">
-          <h1 className="text-2xl font-bold">
-            {isEditMode ? "Edit Event" : "Create a New Event"}
-          </h1>
+      <div className="container mx-auto px-4 py-8 max-w-4xl">
+        {/* Header */}
+        <div className="mb-8">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-10 h-10 bg-gradient-to-br from-primary to-primary/80 rounded-lg flex items-center justify-center">
+              <Sparkles className="w-5 h-5 text-primary-foreground" />
+            </div>
+            <h1 className="text-3xl font-bold gradient-text">
+              {isEditMode ? "Edit Event" : "Create a New Event"}
+            </h1>
+          </div>
           {isEditMode ? (
-            <>
+            <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
               {eventData.id && (
-                <p className="text-sm text-gray-400">ID: {eventData.id}</p>
+                <span className="px-3 py-1 bg-muted rounded-full text-xs font-medium">
+                  ID: {eventData.id}
+                </span>
               )}
               {eventData.createdAt && (
-                <p className="text-sm text-gray-400">
-                  Created At: {format(eventData.createdAt, "PPP")}
-                </p>
+                <span className="px-3 py-1 bg-muted rounded-full text-xs font-medium">
+                  Created: {format(eventData.createdAt, "PPP")}
+                </span>
               )}
               {eventData.updatedAt && (
-                <p className="text-sm text-gray-400">
-                  Updated At: {format(eventData.updatedAt, "PPP")}
-                </p>
+                <span className="px-3 py-1 bg-muted rounded-full text-xs font-medium">
+                  Updated: {format(eventData.updatedAt, "PPP")}
+                </span>
               )}
-            </>
+            </div>
           ) : (
-            <p>Fill out the form below to create your event</p>
+            <p className="text-muted-foreground">Fill out the form below to create your event</p>
           )}
         </div>
 
-        <form onSubmit={handleFormSubmit} className="space-y-4">
-          {/* Event Name */}
-          <div>
-            <div>
-              <label htmlFor="event-name" className="text-sm font-medium">
-                Event Name
-              </label>
-              <Input
-                id="event-name"
-                className="bg-gray-900 border-gray-700 text-white"
-                placeholder="Event Name"
-                value={eventData.name}
-                onChange={(e) => updateField("name", e.target.value)}
-                required
-              />
+        <form onSubmit={handleFormSubmit} className="space-y-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Left Column */}
+            <div className="space-y-6">
+              {/* Event Name */}
+              <div className="space-y-2">
+                <Label htmlFor="event-name" className="text-sm font-medium text-foreground">
+                  Event Name
+                </Label>
+                <Input
+                  id="event-name"
+                  placeholder="Enter your event name"
+                  value={eventData.name}
+                  onChange={(e) => updateField("name", e.target.value)}
+                  required
+                  className="text-base"
+                />
+                <p className="text-xs text-muted-foreground">
+                  This is the public name of your event.
+                </p>
+              </div>
+
+              {/* Event Start Date Time */}
+              <div className="space-y-2">
+                <Label className="text-sm font-medium text-foreground">Event Start</Label>
+                <DateTimeSelect
+                  date={eventData.startDate}
+                  setDate={(date) => updateField("startDate", date)}
+                  time={eventData.startTime}
+                  setTime={(time) => updateField("startTime", time)}
+                  enabled={eventDateEnabled}
+                  setEnabled={setEventDateEnabled}
+                />
+                <p className="text-xs text-muted-foreground">
+                  The date and time that your event starts.
+                </p>
+              </div>
+
+              {/* Event End Date Time */}
+              <div className="space-y-2">
+                <Label className="text-sm font-medium text-foreground">Event End</Label>
+                <DateTimeSelect
+                  date={eventData.endDate}
+                  setDate={(date) => updateField("endDate", date)}
+                  time={eventData.endTime}
+                  setTime={(time) => updateField("endTime", time)}
+                  enabled={eventDateEnabled}
+                  setEnabled={setEventDateEnabled}
+                />
+                <p className="text-xs text-muted-foreground">
+                  The date and time that your event ends.
+                </p>
+              </div>
             </div>
-            <p className="text-gray-400 text-xs">
-              This is the public name of your event.
-            </p>
+
+            {/* Right Column */}
+            <div className="space-y-6">
+              {/* Venue Details */}
+              <div className="space-y-2">
+                <Label htmlFor="venue-details" className="text-sm font-medium text-foreground">
+                  Venue Details
+                </Label>
+                <Textarea
+                  id="venue-details"
+                  className="min-h-[100px] resize-none"
+                  value={eventData.venueDetails}
+                  onChange={(e) => updateField("venueDetails", e.target.value)}
+                  placeholder="Enter venue address, capacity, and other details..."
+                />
+                <p className="text-xs text-muted-foreground">
+                  Details about venue, please include as much detail as possible.
+                </p>
+              </div>
+
+              {/* Event Sales Start Date Time */}
+              <div className="space-y-2">
+                <Label className="text-sm font-medium text-foreground">Event Sales Start</Label>
+                <DateTimeSelect
+                  date={eventData.salesStartDate}
+                  setDate={(date) => updateField("salesStartDate", date)}
+                  time={eventData.salesStartTime}
+                  setTime={(time) => updateField("salesStartTime", time)}
+                  enabled={eventSalesDateEnabled}
+                  setEnabled={setEventSalesDateEnabled}
+                />
+                <p className="text-xs text-muted-foreground">
+                  The date and time that tickets are available for purchase.
+                </p>
+              </div>
+
+              {/* Event Sales End Date Time */}
+              <div className="space-y-2">
+                <Label className="text-sm font-medium text-foreground">Event Sales End</Label>
+                <DateTimeSelect
+                  date={eventData.salesEndDate}
+                  setDate={(date) => updateField("salesEndDate", date)}
+                  time={eventData.salesEndTime}
+                  setTime={(time) => updateField("salesEndTime", time)}
+                  enabled={eventSalesDateEnabled}
+                  setEnabled={setEventSalesDateEnabled}
+                />
+                <p className="text-xs text-muted-foreground">
+                  The date and time that ticket sales end.
+                </p>
+              </div>
+            </div>
           </div>
 
-          {/* Event Start Date Time */}
-          <div>
-            <label className="text-sm font-medium">Event Start</label>
-            <DateTimeSelect
-              date={eventData.startDate}
-              setDate={(date) => updateField("startDate", date)}
-              time={eventData.startTime}
-              setTime={(time) => updateField("startTime", time)}
-              enabled={eventDateEnabled}
-              setEnabled={setEventDateEnabled}
-            />
-            <p className="text-gray-400 text-xs">
-              The date and time that the event starts.
-            </p>
-          </div>
-
-          {/* Event End Date Time */}
-          <div>
-            <label className="text-sm font-medium">Event End</label>
-            <DateTimeSelect
-              date={eventData.endDate}
-              setDate={(date) => updateField("endDate", date)}
-              time={eventData.endTime}
-              setTime={(time) => updateField("endTime", time)}
-              enabled={eventDateEnabled}
-              setEnabled={setEventDateEnabled}
-            />
-            <p className="text-gray-400 text-xs">
-              The date and time that the event ends.
-            </p>
-          </div>
-
-          <div>
-            <label htmlFor="venue-details" className="text-sm font-medium">
-              Venue Details
-            </label>
-            <Textarea
-              id="venue-details"
-              className="bg-gray-900 border-gray-700 min-h-[100px]"
-              value={eventData.venueDetails}
-              onChange={(e) => updateField("venueDetails", e.target.value)}
-            />
-            <p className="text-gray-400 text-xs">
-              Details about the venue, please include as much detail as
-              possible.
-            </p>
-          </div>
-
-          {/* Event Sales Start Date Time */}
-          <div>
-            <label className="text-sm font-medium">Event Sales Start</label>
-            <DateTimeSelect
-              date={eventData.salesStartDate}
-              setDate={(date) => updateField("salesStartDate", date)}
-              time={eventData.salesStartTime}
-              setTime={(time) => updateField("salesStartTime", time)}
-              enabled={eventSalesDateEnabled}
-              setEnabled={setEventSalesDateEnabled}
-            />
-            <p className="text-gray-400 text-xs">
-              The date and time that ticket are available to purchase for the
-              event.
-            </p>
-          </div>
-
-          {/* Event Sales End Date Time */}
-          <div>
-            <label className="text-sm font-medium">Event Sales End</label>
-            <DateTimeSelect
-              date={eventData.salesEndDate}
-              setDate={(date) => updateField("salesEndDate", date)}
-              time={eventData.salesEndTime}
-              setTime={(time) => updateField("salesEndTime", time)}
-              enabled={eventSalesDateEnabled}
-              setEnabled={setEventSalesDateEnabled}
-            />
-            <p className="text-gray-400 text-xs">
-              The date and time that ticket are available to purchase for the
-              event.
-            </p>
-          </div>
-
-          {/* Ticket Types */}
-          <div>
-            <Card className="bg-gray-900 border-gray-700 text-white">
+          {/* Ticket Types Section */}
+          <div className="space-y-4">
+            <Card className="card-3d overflow-hidden">
               <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-                <CardHeader>
-                  <div className="flex justify-between">
-                    <CardTitle className="flex gap-2 items-center text-sm">
-                      <Ticket />
+                <CardHeader className="bg-muted/50">
+                  <div className="flex justify-between items-center">
+                    <CardTitle className="flex gap-2 items-center text-lg">
+                      <Ticket className="w-5 h-5" />
                       Ticket Types
                     </CardTitle>
                     <Button
                       type="button"
                       onClick={() => handleAddTicketType()}
-                      className="bg-gray-800 border-gray-700 text-white"
+                      className="interactive"
+                      size="sm"
                     >
-                      <Plus /> Add Ticket Type
+                      <Plus className="w-4 h-4 mr-2" />
+                      Add Ticket Type
                     </Button>
                   </div>
                 </CardHeader>
-
-                <CardContent className="space-y-2">
+                <CardContent className="space-y-4">
                   {eventData.ticketTypes.map((ticketType) => {
                     return (
-                      <div className="bg-gray-700 w-full p-4 rounded-lg border-gray-600">
-                        <div className="flex justify-between items-center">
-                          {/* Left */}
-                          <div>
-                            <div className="flex gap-4">
-                              <p className="text-small font-medium">
+                      <div key={ticketType.id || generateTempId()} className="p-4 bg-card rounded-xl border border-border">
+                        <div className="flex justify-between items-start">
+                          <div className="flex-1 space-y-2">
+                            <div className="flex items-center gap-3">
+                              <p className="font-medium text-foreground">
                                 {ticketType.name}
                               </p>
                               <Badge
-                                variant="outline"
-                                className="border-gray-600 text-white font-normal text-xs"
+                                variant="secondary"
+                                className="font-medium"
                               >
                                 ${ticketType.price}
                               </Badge>
                             </div>
                             {ticketType.totalAvailable && (
-                              <p className="text-gray-400">
+                              <p className="text-sm text-muted-foreground">
                                 {ticketType.totalAvailable} tickets available
                               </p>
                             )}
                           </div>
-                          {/* Right */}
                           <div className="flex gap-2">
                             <Button
                               type="button"
-                              variant="ghost"
+                              variant="outline"
+                              size="sm"
                               onClick={() => handleEditTicketType(ticketType)}
                             >
-                              <Edit />
+                              <Edit className="w-4 h-4" />
                             </Button>
                             <Button
                               type="button"
-                              variant="ghost"
-                              className="text-red-400"
-                              onClick={() =>
-                                handleDeleteTicketType(ticketType.id)
-                              }
+                              variant="destructive"
+                              size="sm"
+                              onClick={() => handleDeleteTicketType(ticketType.id)}
                             >
-                              <Trash />
+                              <Trash className="w-4 h-4" />
                             </Button>
                           </div>
                         </div>
@@ -632,105 +644,96 @@ const DashboardManageEventPage: React.FC = () => {
                     );
                   })}
                 </CardContent>
-                <DialogContent className="bg-gray-900 border-gray-700 text-white">
+                <DialogContent className="card-3d max-w-md">
                   <DialogHeader>
-                    <DialogTitle>Add Ticket Type</DialogTitle>
-                    <DialogDescription className="text-gray-400">
-                      Please enter details of the ticket type
+                    <DialogTitle className="text-xl font-semibold">
+                      {currentTicketType?.id ? "Edit Ticket Type" : "Add Ticket Type"}
+                    </DialogTitle>
+                    <DialogDescription className="text-muted-foreground">
+                      Please enter details of ticket type
                     </DialogDescription>
                   </DialogHeader>
-
-                  {/* Ticket Type Name */}
-                  <div className="space-y-1">
-                    <Label htmlFor="ticket-type-name">Name</Label>
-                    <Input
-                      id="ticket-type-name"
-                      className="bg-gray-800 border-gray-700"
-                      value={currentTicketType?.name}
-                      onChange={(e) =>
-                        setCurrentTicketType(
-                          currentTicketType
-                            ? { ...currentTicketType, name: e.target.value }
-                            : undefined,
-                        )
-                      }
-                      placeholder="e.g General Admission, VIP, etc."
-                    />
-                  </div>
-
-                  <div className="flex gap-4">
-                    {/* Price */}
-                    <div className="space-y-1 w-full">
-                      <Label htmlFor="ticket-type-price">Price</Label>
+                  <div className="space-y-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="ticket-type-name">Name</Label>
                       <Input
-                        id="ticket-type-price"
-                        type="number"
-                        value={currentTicketType?.price}
+                        id="ticket-type-name"
+                        value={currentTicketType?.name}
+                        onChange={(e) =>
+                          setCurrentTicketType(
+                            currentTicketType
+                              ? { ...currentTicketType, name: e.target.value }
+                              : undefined,
+                          )
+                        }
+                        placeholder="e.g General Admission, VIP, etc."
+                      />
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="ticket-type-price">Price</Label>
+                        <Input
+                          id="ticket-type-price"
+                          type="number"
+                          value={currentTicketType?.price}
+                          onChange={(e) =>
+                            setCurrentTicketType(
+                              currentTicketType
+                                ? {
+                                    ...currentTicketType,
+                                    price: Number.parseFloat(e.target.value),
+                                  }
+                                : undefined,
+                            )
+                          }
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="ticket-type-total-available">
+                          Total Available
+                        </Label>
+                        <Input
+                          id="ticket-type-total-available"
+                          type="number"
+                          value={currentTicketType?.totalAvailable}
+                          onChange={(e) =>
+                            setCurrentTicketType(
+                              currentTicketType
+                                ? {
+                                    ...currentTicketType,
+                                    totalAvailable: Number.parseFloat(e.target.value),
+                                  }
+                                : undefined,
+                            )
+                          }
+                        />
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="ticket-type-description">Description</Label>
+                      <Textarea
+                        id="ticket-type-description"
+                        value={currentTicketType?.description}
                         onChange={(e) =>
                           setCurrentTicketType(
                             currentTicketType
                               ? {
-                                  ...currentTicketType,
-                                  price: Number.parseFloat(e.target.value),
-                                }
-                              : undefined,
+                                    ...currentTicketType,
+                                    description: e.target.value,
+                                  }
+                                : undefined,
                           )
                         }
-                        className="bg-gray-800 border-gray-700"
+                        placeholder="Describe what this ticket includes..."
                       />
                     </div>
-
-                    {/* Total Available */}
-                    <div className="space-y-1 w-full">
-                      <Label htmlFor="ticket-type-total-available">
-                        Total Available
-                      </Label>
-                      <Input
-                        id="ticket-type-total-available"
-                        type="number"
-                        value={currentTicketType?.totalAvailable}
-                        onChange={(e) =>
-                          setCurrentTicketType(
-                            currentTicketType
-                              ? {
-                                  ...currentTicketType,
-                                  totalAvailable: Number.parseFloat(
-                                    e.target.value,
-                                  ),
-                                }
-                              : undefined,
-                          )
-                        }
-                        className="bg-gray-800 border-gray-700"
-                      />
-                    </div>
-                  </div>
-
-                  {/* Ticket Type Description */}
-                  <div className="space-y-1">
-                    <Label htmlFor="ticket-type-description">Description</Label>
-                    <Textarea
-                      id="ticket-type-description"
-                      className="bg-gray-800 border-gray-700"
-                      value={currentTicketType?.description}
-                      onChange={(e) =>
-                        setCurrentTicketType(
-                          currentTicketType
-                            ? {
-                                ...currentTicketType,
-                                description: e.target.value,
-                              }
-                            : undefined,
-                        )
-                      }
-                    />
                   </div>
                   <DialogFooter>
                     <Button
-                      className="bg-white text-black hover:bg-gray-300"
                       onClick={handleSaveTicketType}
+                      className="interactive w-full"
                     >
-                      Save
+                      Save Ticket Type
                     </Button>
                   </DialogFooter>
                 </DialogContent>
@@ -739,46 +742,46 @@ const DashboardManageEventPage: React.FC = () => {
           </div>
 
           {/* Status */}
-          <div className="space-y-1">
-            <Label>Status</Label>
+          <div className="space-y-2">
+            <Label className="text-sm font-medium text-foreground">Event Status</Label>
             <Select
               value={eventData.status}
               onValueChange={(value) => updateField("status", value)}
             >
-              <SelectTrigger className="w-[180px] bg-gray-900 border-gray-700 text-white">
+              <SelectTrigger className="w-full">
                 <SelectValue placeholder="Select Event Status" />
               </SelectTrigger>
-              <SelectContent className="bg-gray-900 border-gray-700 text-white">
+              <SelectContent>
                 <SelectItem value={EventStatusEnum.DRAFT}>Draft</SelectItem>
-                <SelectItem value={EventStatusEnum.PUBLISHED}>
-                  Published
-                </SelectItem>
+                <SelectItem value={EventStatusEnum.PUBLISHED}>Published</SelectItem>
               </SelectContent>
             </Select>
-            <p className="text-gray-400 text-xs">
-              Please select the status of the new event.
+            <p className="text-xs text-muted-foreground">
+              Please select the status of your event.
             </p>
           </div>
 
+          {/* Error Display */}
           {error && (
-            <Alert variant="destructive" className="bg-gray-900 border-red-700">
+            <Alert variant="destructive" className="card-3d">
               <AlertCircle className="h-4 w-4" />
               <AlertTitle>Error</AlertTitle>
               <AlertDescription>{error}</AlertDescription>
             </Alert>
           )}
 
-          <div>
-            <Button onClick={handleFormSubmit}>
-              {isEditMode ? "Update" : "Submit"}
+          {/* Submit Button */}
+          <div className="pt-6">
+            <Button 
+              type="submit" 
+              className="interactive gradient w-full lg:w-auto px-8"
+              size="lg"
+            >
+              {isEditMode ? "Update Event" : "Create Event"}
             </Button>
           </div>
         </form>
-        {/* For Development Only */}
-        {/* <p className="mt-8 font-mono text-white">{JSON.stringify(eventData)}</p> */}
       </div>
     </div>
   );
 };
-
-export default DashboardManageEventPage;
