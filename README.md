@@ -1,96 +1,226 @@
-# Event Ticket Management Platform
+# 🎫 Event Ticket Management Platform
 
-A production-ready full-stack solution for event management, ticket distribution, and QR-based validation.
-
-## 🚀 Key Features
-
-- **Event Lifecycle Management:** Organizers can create, update, and publish events with dynamic ticket types.
-- **Secure Ticketing:** Attendees browse events, purchase tickets via a mock payment gateway, and receive unique QR codes.
-- **On-Site Validation:** Staff interface with QR scanner (integrated camera) for real-time ticket validation and manual entry support.
-- **Enterprise Auth:** Integrated with **Keycloak (OIDC)** for robust identity management and Role-Based Access Control (RBAC).
-- **Automated Provisioning:** Seamless user synchronization between identity provider and local database.
-
-## 🛠 Tech Stack
-
-- **Backend:** Java 17, Spring Boot 3, Spring Security (OAuth2/JWT), JPA/Hibernate, PostgreSQL, MapStruct, Lombok.
-- **Frontend:** React 18, TypeScript, Vite, Tailwind CSS, Shadcn UI, React Router 7.
-- **Infrastructure:** Docker, Docker Compose, Keycloak.
-
-## 📋 Prerequisites
-
-Before running the project, ensure you have the following installed:
-- **Java 17 (JDK)**
-- **Node.js (v18+)**
-- **Docker & Docker Compose**
+**Production-grade full-stack platform** demonstrating enterprise-level event management, secure ticketing workflows, and real-time QR validation. Designed with scalable architecture, strong authentication, and concurrency-safe booking logic.
 
 ---
 
-## 🏃 Running the Application
+## 🚀 Architecture Highlights
 
-### 1. Infrastructure (Docker)
-Launch the database and identity provider:
+### 🏗 Enterprise Backend
+
+* **Spring Boot + Java 21** — Modern JVM ecosystem
+* **Spring Security + OAuth2/JWT** — Enterprise-grade authentication
+* **JPA/Hibernate + Pessimistic Locking** — Prevents race conditions during high-demand ticket sales
+* **MapStruct + Lombok** — Clean, maintainable architecture
+* **PostgreSQL** — Scalable relational persistence
+* **ZXing** — QR generation & validation engine
+
+### 🎨 Modern Frontend
+
+* **React + TypeScript** — Strongly typed UI architecture
+* **Vite** — Ultra-fast builds and HMR
+* **Tailwind CSS + Shadcn UI** — Professional UI system
+* **React Router v7** — Structured routing
+* **OIDC Client** — Seamless auth integration
+* **QR Scanner** — Camera-based validation interface
+
+### 🔐 Security & Identity
+
+* Centralized identity provider integration
+* Role-Based Access Control
+  `ORGANIZER | ATTENDEE | STAFF`
+* Stateless JWT session handling
+* Route-level frontend + backend protection
+
+---
+
+## 🎯 Core Features
+
+### 📅 Event Management
+
+* Dynamic event creation with flexible ticket tiers
+* Status lifecycle: `Draft → Published → Completed`
+* Smart date/time configuration UI
+* Venue capacity management
+
+### 🎫 Ticketing System
+
+* Multi-tier pricing and availability logic
+* Concurrency-safe booking
+* Unique QR per ticket
+* Mock payment workflow
+
+### 📱 Validation System
+
+* Camera-based scanning interface
+* Instant validation status
+* Manual fallback entry
+* Cross-device validation support
+
+### 👥 User Experience
+
+* Built-in demo accounts
+* Role-based user manuals
+* Fully responsive UI
+* Smooth interaction flows
+
+---
+
+## 🛠 Technical Implementation
+
+### 🔄 Concurrency Control
+
+```java
+@Lock(LockModeType.PESSIMISTIC_WRITE)
+Optional<TicketType> findByIdWithLock(@Param("id") UUID id);
+```
+
+Ensures consistent ticket inventory during simultaneous purchases.
+
+### 🎯 Clean Architecture
+
+* DTO + mapper abstraction
+* Service-layer business logic
+* Repository-layer persistence
+* Controller REST interface layer
+
+### 🐳 Containerization
+
+* Multi-stage Docker builds
+* Compose-based local environment
+* Production-ready container configs
+
+---
+
+## ⚡ Quick Start
+
+### 📋 Prerequisites
+
+* Java 21+
+* Node.js 18+
+* Docker + Docker Compose
+
+---
+
+### ▶ Local Development
+
+**1 — Start Infrastructure**
+
 ```bash
 docker-compose up -d
 ```
-*Accessible at: DB (5432), Adminer (8888), Keycloak (9090)*
 
-### 🔑 2. Keycloak Configuration (Required)
-Since this project uses Keycloak for authentication, you need to perform a one-time setup:
-1. Access the Keycloak Console at `http://localhost:9090` (Admin: `admin` / `Anjesh@123`).
-2. **Create Realm:** `event-ticket-platform`.
-3. **Create Client:** `event-ticket-platform-app` (Set 'Standard Flow' Enabled, Valid Redirect URIs: `http://localhost:5173/*`, Web Origins: `*`).
-4. **Create Roles:** `ROLE_ORGANIZER`, `ROLE_ATTENDEE`, `ROLE_STAFF`.
-5. **Create Test User:** Create a user and assign one or more roles under the 'Role Mapping' tab.
+Services:
 
-### 3. Backend (Spring Boot)
-1. Grant execution permissions (Linux/macOS):
-```bash
-chmod +x mvnw
+* PostgreSQL → 5432
+* Adminer → 8888
+* Auth Server → 9090
+
+---
+
+**2 — Configure Auth**
+
 ```
-2. Start the service:
+http://localhost:9090
+```
+
+Create:
+
+* Realm → `event-ticket-platform`
+* Client → `event-ticket-platform-app`
+* Roles → ORGANIZER, ATTENDEE, STAFF
+
+---
+
+**3 — Run Backend**
+
 ```bash
 ./mvnw spring-boot:run
 ```
-*Backend API available at: `http://localhost:8080`*
 
-### 4. Frontend (React)
-1. Install dependencies and start:
+API → `http://localhost:8080`
+
+---
+
+**4 — Run Frontend**
+
 ```bash
 cd front-end
 npm install
 npm run dev
 ```
-*Frontend UI available at: `http://localhost:5173`*
+
+UI → `http://localhost:5173`
 
 ---
 
-## 🌍 Production Deployment
+## 🔑 Demo Accounts
 
-### 1. Database (Neon.tech)
-1.  Create a free PostgreSQL instance on [Neon](https://neon.tech/).
-2.  Copy the **Connection String**.
-
-### 2. Backend (Render + Docker)
-1.  Create a new **Web Service** on [Render](https://render.com/).
-2.  Connect your GitHub repo. Render will automatically detect the `Dockerfile`.
-3.  Add **Environment Variables**:
-    *   `SPRING_DATASOURCE_URL`: (Your Neon connection string)
-    *   `SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI`: `https://YOUR_KEYCLOAK_URL/realms/event-ticket-platform`
-    *   `JAVA_OPTS`: `-Xmx512m` (Optional, for memory management)
-
-### 3. Frontend (Netlify)
-1.  Connect your GitHub repo to [Netlify](https://www.netlify.com/).
-2.  **Build Settings**:
-    *   Base directory: `front-end`
-    *   Build command: `npm run build`
-    *   Publish directory: `front-end/dist`
-3.  **Proxy Configuration**:
-    *   Edit `front-end/public/_redirects` and replace `YOUR_RENDER_BACKEND_URL` with your actual Render URL.
-4.  Update `VITE_KEYCLOAK_URL` in your Netlify Environment Variables to point to your deployed Keycloak.
+| Role      | Username  | Password | Access           |
+| --------- | --------- | -------- | ---------------- |
+| Organizer | organizer | password | Manage events    |
+| Attendee  | attendee  | password | Buy tickets      |
+| Staff     | staff     | password | Validate tickets |
 
 ---
 
-## 🔐 Role-Based Access
-- **ORGANIZER:** Can create/update events and define ticket types.
-- **ATTENDEE:** Can browse events and purchase tickets.
-- **STAFF:** Can access the QR validation interface.
+## ☁️ Production Deployment
+
+### Database
+
+* Create hosted PostgreSQL instance
+* Add connection string to environment variables
+
+### Backend Hosting
+
+```
+DATABASE_URL=<postgres-url>
+KEYCLOAK_ISSUER_URI=<issuer>
+JAVA_OPTS=-Xmx256m -XX:+UseG1GC
+```
+
+Includes health checks + auto deployment config.
+
+### Frontend Hosting
+
+```
+npm run build
+VITE_KEYCLOAK_URL=<auth-url>
+```
+
+---
+
+## 📊 Project Metrics
+
+* **34+ backend classes**
+* **15+ APIs**
+* **12+ UI components**
+* **8+ routes**
+* Auth + RBAC + JWT implementation
+* Optimized builds + caching
+* Integration testing with H2 database
+
+---
+
+## 🏆 Technical Highlights
+
+✔ Enterprise authentication system
+✔ Concurrency-safe booking logic
+✔ Production-ready deployment setup
+✔ Clean architecture layering
+✔ Scalable infrastructure design
+✔ Professional UX system
+
+---
+
+## 🔗 Links
+
+**Live Demo:** `[https://event-ticket-platform-three.vercel.app/]`
+**Source Code:** `[https://github.com/AnjeshDash/Event-Ticket-Platform]`
+
+---
+
+### 👨‍💻 Author
+
+**Anjesh Ranjan Dash**
+Full Stack Engineer
