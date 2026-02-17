@@ -76,49 +76,56 @@ const DateTimeSelect: React.FC<DateTimeSelectProperties> = ({
         onCheckedChange={setEnabled}
         className="data-[state=checked]:bg-primary data-[state=unchecked]:bg-gray-300 border-2 border-gray-400"
       />
+      
+      <div className={`transition-all duration-300 ${enabled ? 'opacity-100' : 'opacity-50'}`}>
+        {enabled ? (
+          <div className="w-full flex gap-2">
+            {/* Date */}
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button className="bg-primary text-primary-foreground border border-primary/20 hover:bg-primary/90">
+                  <CalendarIcon />
+                  {date ? format(date, "PPP") : <span>Pick a Date</span>}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="start">
+                <Calendar
+                  mode="single"
+                  selected={date}
+                  onSelect={(selectedDate) => {
+                    if (!selectedDate) {
+                      return;
+                    }
+                    const displayedYear = selectedDate.getFullYear();
+                    const displayedMonth = selectedDate.getMonth();
+                    const displayedDay = selectedDate.getDate();
 
-      {enabled && (
-        <div className="w-full flex gap-2">
-          {/* Date */}
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button className="bg-primary text-primary-foreground border border-primary/20 hover:bg-primary/90">
-                <CalendarIcon />
-                {date ? format(date, "PPP") : <span>Pick a Date</span>}
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-auto p-0" align="start">
-              <Calendar
-                mode="single"
-                selected={date}
-                onSelect={(selectedDate) => {
-                  if (!selectedDate) {
-                    return;
-                  }
-                  const displayedYear = selectedDate.getFullYear();
-                  const displayedMonth = selectedDate.getMonth();
-                  const displayedDay = selectedDate.getDate();
+                    const correctedDate = new Date(
+                      Date.UTC(displayedYear, displayedMonth, displayedDay),
+                    );
 
-                  const correctedDate = new Date(
-                    Date.UTC(displayedYear, displayedMonth, displayedDay),
-                  );
-
-                  setDate(correctedDate);
-                }}
-            />
-          </PopoverContent>
-        </Popover>
-        {/* Time */}
-        <div className="flex gap-2 items-center">
-          <Input
-            type="time"
-            className="w-[90px] bg-background text-foreground border border-border"
-            value={time}
-            onChange={(e) => setTime(e.target.value)}
-          />
-        </div>
+                    setDate(correctedDate);
+                  }}
+                />
+              </PopoverContent>
+            </Popover>
+            {/* Time */}
+            <div className="flex gap-2 items-center">
+              <Input
+                type="time"
+                className="w-[90px] bg-background text-foreground border border-border"
+                value={time}
+                onChange={(e) => setTime(e.target.value)}
+              />
+            </div>
+          </div>
+        ) : (
+          <div className="w-full flex gap-2 items-center text-muted-foreground">
+            <CalendarIcon className="w-4 h-4" />
+            <span className="text-sm">Date and time not set</span>
+          </div>
+        )}
       </div>
-      )}
     </div>
   );
 };
