@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { useAuth } from "react-oidc-context";
 import { useNavigate } from "react-router";
 import { Sparkles, Calendar, Users, Ticket, ArrowRight, LogIn, LogOut, ArrowLeft, Info, User, QrCode } from "lucide-react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 
 const OrganizersLandingPage: React.FC = () => {
   const { isAuthenticated, isLoading, signinRedirect, signoutRedirect } =
@@ -59,86 +59,95 @@ const OrganizersLandingPage: React.FC = () => {
                   Log in
                 </Button>
                 
-                {/* Demo Credentials Section */}
-                <div className="mt-8 max-w-4xl mx-auto">
-                  <Card className="border-2 border-primary/20 bg-card/50 backdrop-blur-sm">
-                    <CardHeader className="text-center">
-                      <CardTitle className="flex items-center justify-center gap-2 text-lg">
-                        <Info className="w-5 h-5 text-primary" />
-                        Demo Login Credentials
-                      </CardTitle>
-                      <CardDescription>
-                        Use these credentials to explore different user roles and functionalities
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent className="space-y-6">
-                      {/* Organizer Role */}
-                      <div className="bg-primary/5 rounded-lg p-4 border border-primary/20">
-                        <div className="flex items-center gap-3 mb-3">
-                          <Users className="w-5 h-5 text-primary" />
-                          <h4 className="font-semibold text-primary">Organizer</h4>
-                        </div>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
-                          <div>
-                            <span className="font-medium">Username:</span> organizer
+                {/* User Manual Button */}
+                <div className="mt-4">
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <Button variant="outline" className="interactive">
+                        <Info className="w-4 h-4 mr-2" />
+                        User Manual
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+                      <DialogHeader>
+                        <DialogTitle className="flex items-center gap-2 text-xl">
+                          <Info className="w-6 h-6 text-primary" />
+                          Demo Login Credentials & User Guide
+                        </DialogTitle>
+                        <DialogDescription>
+                          Use these credentials to explore different user roles and functionalities
+                        </DialogDescription>
+                      </DialogHeader>
+                      
+                      <div className="space-y-6">
+                        {/* Organizer Role */}
+                        <div className="bg-primary/5 rounded-lg p-4 border border-primary/20">
+                          <div className="flex items-center gap-3 mb-3">
+                            <Users className="w-5 h-5 text-primary" />
+                            <h4 className="font-semibold text-primary">Organizer</h4>
                           </div>
-                          <div>
-                            <span className="font-medium">Password:</span> password
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm mb-3">
+                            <div>
+                              <span className="font-medium">Username:</span> organizer
+                            </div>
+                            <div>
+                              <span className="font-medium">Password:</span> password
+                            </div>
+                          </div>
+                          <div className="text-sm text-muted-foreground">
+                            <strong>What you can do:</strong> Create events, manage ticket types, publish events, and track sales
+                          </div>
+                          <div className="mt-2 text-xs text-muted-foreground">
+                            Go to Dashboard → Create Event → Fill details → Publish
                           </div>
                         </div>
-                        <div className="mt-3 text-sm text-muted-foreground">
-                          <strong>What you can do:</strong> Create events, manage ticket types, publish events, and track sales
-                        </div>
-                        <div className="mt-2 text-xs text-muted-foreground">
-                          Go to Dashboard → Create Event → Fill details → Publish
-                        </div>
-                      </div>
 
-                      {/* Attendee Role */}
-                      <div className="bg-accent/5 rounded-lg p-4 border border-accent/20">
-                        <div className="flex items-center gap-3 mb-3">
-                          <User className="w-5 h-5 text-accent" />
-                          <h4 className="font-semibold text-accent">Attendee</h4>
-                        </div>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
-                          <div>
-                            <span className="font-medium">Username:</span> attendee
+                        {/* Attendee Role */}
+                        <div className="bg-accent/5 rounded-lg p-4 border border-accent/20">
+                          <div className="flex items-center gap-3 mb-3">
+                            <User className="w-5 h-5 text-accent" />
+                            <h4 className="font-semibold text-accent">Attendee</h4>
                           </div>
-                          <div>
-                            <span className="font-medium">Password:</span> password
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm mb-3">
+                            <div>
+                              <span className="font-medium">Username:</span> attendee
+                            </div>
+                            <div>
+                              <span className="font-medium">Password:</span> password
+                            </div>
+                          </div>
+                          <div className="text-sm text-muted-foreground">
+                            <strong>What you can do:</strong> Browse events, purchase tickets, view purchased tickets
+                          </div>
+                          <div className="mt-2 text-xs text-muted-foreground">
+                            Click on event → Purchase ticket → Use fake card details → View tickets in Dashboard → Get QR code
                           </div>
                         </div>
-                        <div className="mt-3 text-sm text-muted-foreground">
-                          <strong>What you can do:</strong> Browse events, purchase tickets, view purchased tickets
-                        </div>
-                        <div className="mt-2 text-xs text-muted-foreground">
-                          Click on event → Purchase ticket → Use fake card details → View tickets in Dashboard → Get QR code
-                        </div>
-                      </div>
 
-                      {/* Staff Role */}
-                      <div className="bg-secondary/5 rounded-lg p-4 border border-secondary/20">
-                        <div className="flex items-center gap-3 mb-3">
-                          <QrCode className="w-5 h-5 text-secondary" />
-                          <h4 className="font-semibold text-secondary">Staff</h4>
-                        </div>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
-                          <div>
-                            <span className="font-medium">Username:</span> staff
+                        {/* Staff Role */}
+                        <div className="bg-secondary/5 rounded-lg p-4 border border-secondary/20">
+                          <div className="flex items-center gap-3 mb-3">
+                            <QrCode className="w-5 h-5 text-secondary" />
+                            <h4 className="font-semibold text-secondary">Staff</h4>
                           </div>
-                          <div>
-                            <span className="font-medium">Password:</span> password
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm mb-3">
+                            <div>
+                              <span className="font-medium">Username:</span> staff
+                            </div>
+                            <div>
+                              <span className="font-medium">Password:</span> password
+                            </div>
                           </div>
-                        </div>
-                        <div className="mt-3 text-sm text-muted-foreground">
-                          <strong>What you can do:</strong> Validate tickets using QR code scanning
-                        </div>
-                        <div className="mt-2 text-xs text-muted-foreground">
-                          Open website on another device → Login as staff → Dashboard → Validate QR → Scan attendee's ticket
+                          <div className="text-sm text-muted-foreground">
+                            <strong>What you can do:</strong> Validate tickets using QR code scanning
+                          </div>
+                          <div className="mt-2 text-xs text-muted-foreground">
+                            Open website on another device → Login as staff → Dashboard → Validate QR → Scan attendee's ticket
+                          </div>
                         </div>
                       </div>
-                    </CardContent>
-                  </Card>
+                    </DialogContent>
+                  </Dialog>
                 </div>
               </div>
             )}
