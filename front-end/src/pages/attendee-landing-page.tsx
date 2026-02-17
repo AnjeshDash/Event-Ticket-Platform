@@ -9,7 +9,6 @@ import { listPublishedEvents, searchPublishedEvents } from "@/lib/api";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import PublishedEventCard from "@/components/published-event-card";
 import { SimplePagination } from "@/components/simple-pagination";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 
 const AttendeeLandingPage: React.FC = () => {
