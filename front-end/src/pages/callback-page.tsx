@@ -62,9 +62,18 @@ const CallbackPage: React.FC = () => {
             
             {/* Logo/Icon */}
             <div className="flex justify-center mb-6">
-              <div className="w-16 h-16 bg-gradient-to-br from-primary to-primary/80 rounded-2xl flex items-center justify-center">
+              <div 
+                className="w-16 h-16 bg-gradient-to-br from-primary to-primary/80 rounded-2xl flex items-center justify-center cursor-pointer"
+                onClick={() => navigate("/")}
+              >
                 <Sparkles className="w-8 h-8 text-primary-foreground" />
               </div>
+              <span 
+                className="text-xl font-bold gradient-text cursor-pointer"
+                onClick={() => navigate("/")}
+              >
+                EventHub
+              </span>
             </div>
 
             {/* Loading/Processing State */}

@@ -16,7 +16,7 @@ import { useNavigation } from "@/hooks/use-navigation";
 const PublishedEventsPage: React.FC = () => {
   const { isAuthenticated, isLoading, signinRedirect, signoutRedirect } =
     useAuth();
-  const { goBackSmart, goToDashboard } = useNavigation();
+  const { goBackSmart, goToDashboard, navigate } = useNavigation();
   const { id } = useParams();
   const [error, setError] = useState<string | undefined>();
   const [publishedEvent, setPublishedEvent] = useState<
@@ -126,7 +126,10 @@ const PublishedEventsPage: React.FC = () => {
               >
                 <ArrowLeft className="w-4 h-4" />
               </Button>
-              <div className="w-12 h-12 bg-gradient-to-br from-primary to-primary/80 rounded-lg flex items-center justify-center">
+              <div 
+                className="w-12 h-12 bg-gradient-to-br from-primary to-primary/80 rounded-lg flex items-center justify-center cursor-pointer"
+                onClick={() => navigate("/")}
+              >
                 <Sparkles className="w-6 h-6 text-primary-foreground" />
               </div>
               <h1 className="text-4xl font-bold gradient-text">{publishedEvent?.name}</h1>

@@ -6,7 +6,7 @@ import { useNavigation } from "@/hooks/use-navigation";
 
 const LoginPage: React.FC = () => {
   const { isLoading, isAuthenticated, signinRedirect } = useAuth();
-  const { goBackSmart } = useNavigation();
+  const { goBackSmart, navigate } = useNavigation();
 
   useEffect(() => {
     if (isLoading) {
@@ -36,7 +36,10 @@ const LoginPage: React.FC = () => {
           <div className="space-y-6">
             {/* Logo/Icon */}
             <div className="flex justify-center mb-6">
-              <div className="w-16 h-16 bg-gradient-to-br from-primary to-primary/80 rounded-2xl flex items-center justify-center">
+              <div 
+                className="w-16 h-16 bg-gradient-to-br from-primary to-primary/80 rounded-2xl flex items-center justify-center cursor-pointer"
+                onClick={() => navigate("/")}
+              >
                 <Sparkles className="w-8 h-8 text-primary-foreground" />
               </div>
             </div>

@@ -33,6 +33,7 @@ import {
   MapPin,
   Tag,
   Trash,
+  Sparkles,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useAuth } from "react-oidc-context";
@@ -41,7 +42,7 @@ import { useNavigation } from "@/hooks/use-navigation";
 
 const DashboardListEventsPage: React.FC = () => {
   const { isLoading, user } = useAuth();
-  const { goBackSmart } = useNavigation();
+  const { goBackSmart, navigate } = useNavigation();
   const [events, setEvents] = useState<
     SpringBootPagination<EventSummary> | undefined
   >();
@@ -177,6 +178,12 @@ const DashboardListEventsPage: React.FC = () => {
             >
               <ArrowLeft className="w-4 h-4" />
             </Button>
+            <div 
+              className="w-8 h-8 bg-gradient-to-br from-primary to-primary/80 rounded-lg flex items-center justify-center cursor-pointer"
+              onClick={() => navigate("/")}
+            >
+              <Sparkles className="w-5 h-5 text-primary-foreground" />
+            </div>
             <div>
               <h1 className="text-3xl font-bold gradient-text mb-2">Your Events</h1>
               <p className="text-muted-foreground">Manage and track your created events</p>

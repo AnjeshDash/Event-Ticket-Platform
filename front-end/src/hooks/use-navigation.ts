@@ -22,8 +22,8 @@ export const useNavigation = () => {
     const fallbackMap: Record<string, string> = {
       "/events": "/",
       "/organizers": "/",
-      "/dashboard": "/dashboard",
-      "/dashboard/events": "/dashboard",
+      "/dashboard": "/",
+      "/dashboard/events": "/",
       "/dashboard/tickets": "/dashboard",
       "/dashboard/validate-qr": "/dashboard",
     };

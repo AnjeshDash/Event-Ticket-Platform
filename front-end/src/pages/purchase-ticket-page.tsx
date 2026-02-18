@@ -12,7 +12,7 @@ const PurchaseTicketPage: React.FC = () => {
   const { eventId, ticketTypeId } = useParams();
   const { isLoading, user } = useAuth();
   const navigate = useNavigate();
-  const { goBackSmart } = useNavigation();
+  const { goBackSmart, navigate: navNavigate } = useNavigation();
   const [error, setError] = useState<string | undefined>();
   const [isPurchaseSuccess, setIsPurchaseASuccess] = useState(false);
 
@@ -83,7 +83,10 @@ const PurchaseTicketPage: React.FC = () => {
               >
                 <ArrowLeft className="w-4 h-4" />
               </Button>
-              <div className="w-12 h-12 bg-gradient-to-br from-primary to-primary/80 rounded-lg flex items-center justify-center">
+              <div 
+                className="w-12 h-12 bg-gradient-to-br from-primary to-primary/80 rounded-lg flex items-center justify-center cursor-pointer"
+                onClick={() => navNavigate("/")}
+              >
                 <Sparkles className="w-6 h-6 text-primary-foreground" />
               </div>
               <h1 className="text-4xl font-bold gradient-text">Purchase Ticket</h1>

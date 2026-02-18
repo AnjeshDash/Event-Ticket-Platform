@@ -1,9 +1,8 @@
 import { useAuth } from "react-oidc-context";
 import { Button } from "../components/ui/button";
 import { useNavigate } from "react-router";
-import { useNavigation } from "@/hooks/use-navigation";
 import { Input } from "@/components/ui/input";
-import { AlertCircle, Search, Sparkles, Calendar, Info, User, Users, QrCode, ArrowLeft } from "lucide-react";
+import { AlertCircle, Search, Sparkles, Calendar, Info, User, Users, QrCode } from "lucide-react";
 import { useEffect, useState } from "react";
 import { PublishedEventSummary, SpringBootPagination } from "@/domain/domain";
 import { listPublishedEvents, searchPublishedEvents } from "@/lib/api";
@@ -17,7 +16,6 @@ const AttendeeLandingPage: React.FC = () => {
     useAuth();
 
   const navigate = useNavigate();
-  const { goBackSmart } = useNavigation();
 
   const [page, setPage] = useState(0);
   const [publishedEvents, setPublishedEvents] = useState<
@@ -109,14 +107,6 @@ const AttendeeLandingPage: React.FC = () => {
         <div className="container mx-auto px-4 py-4">
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-2">
-              <Button
-                variant="outline"
-                size="icon"
-                onClick={goBackSmart}
-                className="interactive"
-              >
-                <ArrowLeft className="w-4 h-4" />
-              </Button>
               <div 
                 className="w-8 h-8 bg-gradient-to-br from-primary to-primary/80 rounded-lg flex items-center justify-center cursor-pointer"
                 onClick={() => navigate("/")}

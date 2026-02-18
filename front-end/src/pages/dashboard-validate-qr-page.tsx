@@ -14,7 +14,7 @@ import { useNavigation } from "@/hooks/use-navigation";
 
 const DashboardValidateQrPage: React.FC = () => {
   const { isLoading, user } = useAuth();
-  const { goBackSmart } = useNavigation();
+  const { goBackSmart, navigate } = useNavigation();
   const [isManual, setIsManual] = useState(false);
   const [data, setData] = useState<string | undefined>();
   const [error, setError] = useState<string | undefined>();
@@ -73,7 +73,10 @@ const DashboardValidateQrPage: React.FC = () => {
               >
                 <ArrowLeft className="w-4 h-4" />
               </Button>
-              <div className="w-12 h-12 bg-gradient-to-br from-primary to-primary/80 rounded-lg flex items-center justify-center">
+              <div 
+                className="w-12 h-12 bg-gradient-to-br from-primary to-primary/80 rounded-lg flex items-center justify-center cursor-pointer"
+                onClick={() => navigate("/")}
+              >
                 <Sparkles className="w-6 h-6 text-primary-foreground" />
               </div>
               <h1 className="text-4xl font-bold gradient-text">Validate Ticket</h1>
