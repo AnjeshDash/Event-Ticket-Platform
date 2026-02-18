@@ -33,7 +33,17 @@ export const useNavigation = () => {
       currentPath.startsWith(key)
     ) || "/";
 
-    goBack(fallbackPath);
+    // Always use the fallback for dashboard routes to avoid browser history issues
+    if (currentPath.startsWith("/dashboard")) {
+      navigate(fallbackPath);
+    } else {
+      // For non-dashboard routes, check browser history first
+      if (window.history.length > 1) {
+        navigate(-1);
+      } else {
+        navigate(fallbackPath);
+      }
+    }
   };
 
   // Navigate to specific dashboard section
