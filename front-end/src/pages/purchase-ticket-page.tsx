@@ -6,11 +6,13 @@ import { ArrowLeft, CheckCircle, CreditCard, Sparkles, Shield, Lock } from "luci
 import { useEffect, useState } from "react";
 import { useAuth } from "react-oidc-context";
 import { useNavigate, useParams } from "react-router";
+import { useNavigation } from "@/hooks/use-navigation";
 
 const PurchaseTicketPage: React.FC = () => {
   const { eventId, ticketTypeId } = useParams();
   const { isLoading, user } = useAuth();
   const navigate = useNavigate();
+  const { goBackSmart } = useNavigation();
   const [error, setError] = useState<string | undefined>();
   const [isPurchaseSuccess, setIsPurchaseASuccess] = useState(false);
 
@@ -76,7 +78,7 @@ const PurchaseTicketPage: React.FC = () => {
               <Button
                 variant="outline"
                 size="icon"
-                onClick={() => navigate(-1)}
+                onClick={goBackSmart}
                 className="interactive absolute left-0"
               >
                 <ArrowLeft className="w-4 h-4" />

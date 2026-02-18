@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { useAuth } from "react-oidc-context";
-import { useNavigate } from "react-router";
+import { useNavigation } from "@/hooks/use-navigation";
 import { Sparkles, Calendar, Users, Ticket, ArrowRight, LogIn, LogOut, ArrowLeft, Info, User, QrCode } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 
@@ -8,7 +8,7 @@ const OrganizersLandingPage: React.FC = () => {
   const { isAuthenticated, isLoading, signinRedirect, signoutRedirect } =
     useAuth();
 
-  const navigate = useNavigate();
+  const { goBackSmart, goToDashboard, navigate } = useNavigation();
 
   if (isLoading) {
     return <p>Loading...</p>;
@@ -34,7 +34,7 @@ const OrganizersLandingPage: React.FC = () => {
             {isAuthenticated ? (
               <div className="flex gap-3">
                 <Button
-                  onClick={() => navigate("/dashboard/events")}
+                  onClick={() => goToDashboard("events")}
                   variant="outline"
                   className="interactive"
                 >
@@ -165,7 +165,7 @@ const OrganizersLandingPage: React.FC = () => {
                 <Button
                   variant="outline"
                   size="icon"
-                  onClick={() => navigate(-1)}
+                  onClick={goBackSmart}
                   className="interactive"
                 >
                   <ArrowLeft className="w-4 h-4" />

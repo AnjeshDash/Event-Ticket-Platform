@@ -8,11 +8,12 @@ import { listTickets } from "@/lib/api";
 import { AlertCircle, ArrowLeft, DollarSign, Tag, Ticket, Sparkles } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useAuth } from "react-oidc-context";
-import { Link, useNavigate } from "react-router";
+import { Link } from "react-router";
+import { useNavigation } from "@/hooks/use-navigation";
 
 const DashboardListTickets: React.FC = () => {
   const { isLoading, user } = useAuth();
-  const navigate = useNavigate();
+  const { goBackSmart } = useNavigation();
   const [tickets, setTickets] = useState<SpringBootPagination<TicketSummary> | undefined>();
   const [error, setError] = useState<string | undefined>();
   const [page, setPage] = useState(0);
@@ -55,7 +56,7 @@ const DashboardListTickets: React.FC = () => {
             <Button
               variant="outline"
               size="icon"
-              onClick={() => navigate(-1)}
+              onClick={goBackSmart}
               className="interactive"
             >
               <ArrowLeft className="w-4 h-4" />

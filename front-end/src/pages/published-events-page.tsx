@@ -10,12 +10,13 @@ import { getPublishedEvent } from "@/lib/api";
 import { AlertCircle, ArrowLeft, MapPin, Sparkles, Calendar, DollarSign, Ticket } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useAuth } from "react-oidc-context";
-import { Link, useNavigate, useParams } from "react-router";
+import { Link, useParams } from "react-router";
+import { useNavigation } from "@/hooks/use-navigation";
 
 const PublishedEventsPage: React.FC = () => {
   const { isAuthenticated, isLoading, signinRedirect, signoutRedirect } =
     useAuth();
-  const navigate = useNavigate();
+  const { goBackSmart, goToDashboard } = useNavigation();
   const { id } = useParams();
   const [error, setError] = useState<string | undefined>();
   const [publishedEvent, setPublishedEvent] = useState<
@@ -85,7 +86,7 @@ const PublishedEventsPage: React.FC = () => {
             {isAuthenticated ? (
               <div className="flex gap-3">
                 <Button
-                  onClick={() => navigate("/dashboard/events")}
+                  onClick={() => goToDashboard("events")}
                   variant="outline"
                   className="interactive"
                 >
@@ -120,7 +121,7 @@ const PublishedEventsPage: React.FC = () => {
               <Button
                 variant="outline"
                 size="icon"
-                onClick={() => navigate(-1)}
+                onClick={goBackSmart}
                 className="interactive"
               >
                 <ArrowLeft className="w-4 h-4" />

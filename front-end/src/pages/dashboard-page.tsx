@@ -2,10 +2,12 @@ import { useRoles } from "@/hooks/use-roles";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router";
+import { useNavigation } from "@/hooks/use-navigation";
 
 const DashboardPage: React.FC = () => {
   const { isLoading, isOrganizer, isStaff } = useRoles();
   const navigate = useNavigate();
+  const { goBackSmart } = useNavigation();
 
   if (isLoading) {
     return (
@@ -39,7 +41,7 @@ const DashboardPage: React.FC = () => {
           <Button
             variant="outline"
             size="sm"
-            onClick={() => navigate(-1)}
+            onClick={goBackSmart}
             className="interactive"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />

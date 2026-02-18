@@ -51,6 +51,7 @@ import {
 import { useEffect, useState } from "react";
 import { useAuth } from "react-oidc-context";
 import { useNavigate, useParams } from "react-router";
+import { useNavigation } from "@/hooks/use-navigation";
 //errors
 interface DateTimeSelectProperties {
   date: Date | undefined;
@@ -164,6 +165,7 @@ const DashboardManageEventPage: React.FC = () => {
   const { id } = useParams();
   const isEditMode = !!id;
   const navigate = useNavigate();
+  const { goBackSmart } = useNavigation();
 
   const [eventData, setEventData] = useState<EventData>({
     id: undefined,
@@ -453,7 +455,7 @@ const DashboardManageEventPage: React.FC = () => {
             <Button
               variant="outline"
               size="icon"
-              onClick={() => navigate(-1)}
+              onClick={goBackSmart}
               className="interactive"
             >
               <ArrowLeft className="w-4 h-4" />

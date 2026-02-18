@@ -3,10 +3,12 @@ import { useAuth } from "react-oidc-context";
 import { useNavigate } from "react-router";
 import { Button } from "@/components/ui/button";
 import { Sparkles, AlertCircle, Home, Loader, CheckCircle, ArrowLeft } from "lucide-react";
+import { useNavigation } from "@/hooks/use-navigation";
 
 const CallbackPage: React.FC = () => {
   const { isLoading, isAuthenticated, error } = useAuth();
   const navigate = useNavigate();
+  const { goBackSmart } = useNavigation();
 
   useEffect(() => {
     if (!isLoading && isAuthenticated) {
@@ -51,7 +53,7 @@ const CallbackPage: React.FC = () => {
               <Button
                 variant="outline"
                 size="icon"
-                onClick={() => navigate(-1)}
+                onClick={goBackSmart}
                 className="interactive"
               >
                 <ArrowLeft className="w-4 h-4" />

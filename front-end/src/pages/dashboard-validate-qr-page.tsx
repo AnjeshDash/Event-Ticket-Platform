@@ -10,11 +10,11 @@ import { AlertCircle, ArrowLeft, Check, X, Sparkles, QrCode, Keyboard } from "lu
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { validateTicket } from "@/lib/api";
 import { useAuth } from "react-oidc-context";
-import { useNavigate } from "react-router";
+import { useNavigation } from "@/hooks/use-navigation";
 
 const DashboardValidateQrPage: React.FC = () => {
   const { isLoading, user } = useAuth();
-  const navigate = useNavigate();
+  const { goBackSmart } = useNavigation();
   const [isManual, setIsManual] = useState(false);
   const [data, setData] = useState<string | undefined>();
   const [error, setError] = useState<string | undefined>();
@@ -68,7 +68,7 @@ const DashboardValidateQrPage: React.FC = () => {
               <Button
                 variant="outline"
                 size="icon"
-                onClick={() => navigate(-1)}
+                onClick={goBackSmart}
                 className="interactive absolute left-0"
               >
                 <ArrowLeft className="w-4 h-4" />

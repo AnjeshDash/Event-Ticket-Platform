@@ -5,7 +5,8 @@ import { format } from "date-fns";
 import { ArrowLeft, Calendar, DollarSign, MapPin, Tag, Sparkles } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useAuth } from "react-oidc-context";
-import { useParams, useNavigate } from "react-router";
+import { useParams } from "react-router";
+import { useNavigation } from "@/hooks/use-navigation";
 
 const DashboardViewTicketPage: React.FC = () => {
   const [ticket, setTicket] = useState<TicketDetails | undefined>();
@@ -15,7 +16,7 @@ const DashboardViewTicketPage: React.FC = () => {
 
   const { id } = useParams();
   const { isLoading, user } = useAuth();
-  const navigate = useNavigate();
+  const { goBackSmart } = useNavigation();
 
   useEffect(() => {
     if (isLoading || !user?.access_token || !id) {
@@ -95,7 +96,7 @@ const DashboardViewTicketPage: React.FC = () => {
               <Button
                 variant="outline"
                 size="icon"
-                onClick={() => navigate(-1)}
+                onClick={goBackSmart}
                 className="interactive absolute left-0"
               >
                 <ArrowLeft className="w-4 h-4" />
