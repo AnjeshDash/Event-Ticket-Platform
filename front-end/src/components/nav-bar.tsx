@@ -10,11 +10,12 @@ import {
 } from "./ui/dropdown-menu";
 import { LogOut, Sparkles } from "lucide-react";
 import { useRoles } from "@/hooks/use-roles";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 const NavBar: React.FC = () => {
   const { user, signoutRedirect } = useAuth();
   const { isOrganizer } = useRoles();
+  const navigate = useNavigate();
 
   return (
     <header className="sticky top-0 z-50 glass border-b border-border/50">
@@ -22,10 +23,18 @@ const NavBar: React.FC = () => {
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-8">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-gradient-to-br from-primary to-primary/80 rounded-lg flex items-center justify-center">
+              <div 
+                className="w-8 h-8 bg-gradient-to-br from-primary to-primary/80 rounded-lg flex items-center justify-center cursor-pointer"
+                onClick={() => navigate("/")}
+              >
                 <Sparkles className="w-5 h-5 text-primary-foreground" />
               </div>
-              <span className="text-xl font-bold gradient-text">EventHub</span>
+              <span 
+                className="text-xl font-bold gradient-text cursor-pointer hover:text-primary transition-colors"
+                onClick={() => navigate("/")}
+              >
+                EventHub
+              </span>
             </div>
             
             <nav className="hidden md:flex items-center gap-6">

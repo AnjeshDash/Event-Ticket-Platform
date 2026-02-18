@@ -364,13 +364,21 @@ const AttendeeLandingPage: React.FC = () => {
         <div className="container mx-auto px-4">
           <div className="text-center">
             <div className="flex items-center justify-center gap-2 mb-4">
-              <div className="w-6 h-6 bg-gradient-to-br from-primary to-primary/80 rounded-lg flex items-center justify-center">
+              <div 
+                className="w-6 h-6 bg-gradient-to-br from-primary to-primary/80 rounded-lg flex items-center justify-center cursor-pointer"
+                onClick={() => navigate("/")}
+              >
                 <Sparkles className="w-4 h-4 text-primary-foreground" />
               </div>
-              <span className="text-lg font-bold gradient-text">EventHub</span>
+              <span 
+                className="text-lg font-bold gradient-text cursor-pointer"
+                onClick={() => navigate("/")}
+              >
+                EventHub
+              </span>
             </div>
             <p className="text-muted-foreground">
-              © 2024 EventHub. All rights reserved.
+              © 2026 <span className="cursor-pointer hover:text-primary transition-colors" onClick={() => navigate("/")}>EventHub</span>. All rights reserved.
             </p>
           </div>
         </div>

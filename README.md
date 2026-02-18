@@ -1,36 +1,35 @@
 # 🎫 Event Ticket Management Platform
 
-**Production-grade full-stack platform** demonstrating enterprise-level event management, secure ticketing workflows, and real-time QR validation. Designed with scalable architecture, strong authentication, and concurrency-safe booking logic.
+**A comprehensive full-stack event management platform** built with modern technologies and enterprise-grade architecture. Features secure authentication, real-time QR validation, and scalable ticketing workflows.
 
 ---
 
-## 🚀 Architecture Highlights
+## 🚀 Architecture Overview
 
-### 🏗 Enterprise Backend
+### 🏗 Backend Technology Stack
 
 * **Spring Boot + Java 21** — Modern JVM ecosystem
-* **Spring Security + OAuth2/JWT** — Enterprise-grade authentication
-* **JPA/Hibernate + Pessimistic Locking** — Prevents race conditions during high-demand ticket sales
+* **Spring Security + OAuth2/JWT** — Enterprise-grade authentication  
+* **JPA/Hibernate + Pessimistic Locking** — Prevents race conditions during ticket sales
 * **MapStruct + Lombok** — Clean, maintainable architecture
 * **PostgreSQL** — Scalable relational persistence
 * **ZXing** — QR generation & validation engine
 
-### 🎨 Modern Frontend
+### 🎨 Frontend Technology Stack
 
 * **React + TypeScript** — Strongly typed UI architecture
-* **Vite** — Ultra-fast builds and HMR
-* **Tailwind CSS + Shadcn UI** — Professional UI system
+* **Vite** — Ultra-fast builds and hot module replacement
+* **Tailwind CSS + Shadcn UI** — Professional design system
 * **React Router v7** — Structured routing
-* **OIDC Client** — Seamless auth integration
+* **OIDC Client** — Seamless authentication integration
 * **QR Scanner** — Camera-based validation interface
 
-### 🔐 Security & Identity
+### 🔐 Security & Authentication
 
 * Centralized identity provider integration
-* Role-Based Access Control
-  `ORGANIZER | ATTENDEE | STAFF`
+* Role-Based Access Control: `ORGANIZER | ATTENDEE | STAFF`
 * Stateless JWT session handling
-* Route-level frontend + backend protection
+* Route-level frontend and backend protection
 
 ---
 
@@ -47,7 +46,7 @@
 
 * Multi-tier pricing and availability logic
 * Concurrency-safe booking
-* Unique QR per ticket
+* Unique QR code per ticket
 * Mock payment workflow
 
 ### 📱 Validation System
@@ -61,7 +60,7 @@
 
 * Built-in demo accounts
 * Role-based user manuals
-* Fully responsive UI
+* Fully responsive design
 * Smooth interaction flows
 
 ---
@@ -77,7 +76,7 @@ Optional<TicketType> findByIdWithLock(@Param("id") UUID id);
 
 Ensures consistent ticket inventory during simultaneous purchases.
 
-### 🎯 Clean Architecture
+### � Clean Architecture
 
 * DTO + mapper abstraction
 * Service-layer business logic
@@ -111,21 +110,19 @@ docker-compose up -d
 ```
 
 Services:
-
 * PostgreSQL → 5432
 * Adminer → 8888
 * Auth Server → 9090
 
 ---
 
-**2 — Configure Auth**
+**2 — Configure Authentication**
 
 ```
 http://localhost:9090
 ```
 
 Create:
-
 * Realm → `event-ticket-platform`
 * Client → `event-ticket-platform-app`
 * Roles → ORGANIZER, ATTENDEE, STAFF
@@ -164,14 +161,14 @@ UI → `http://localhost:5173`
 
 ---
 
-## ☁️ Production Deployment
+## 🌐 Production Deployment
 
 ### Database
 
 * Create hosted PostgreSQL instance
 * Add connection string to environment variables
 
-### Backend Hosting
+### Backend Deployment
 
 ```
 DATABASE_URL=<postgres-url>
@@ -179,9 +176,9 @@ KEYCLOAK_ISSUER_URI=<issuer>
 JAVA_OPTS=-Xmx256m -XX:+UseG1GC
 ```
 
-Includes health checks + auto deployment config.
+Includes health checks + auto deployment configuration.
 
-### Frontend Hosting
+### Frontend Deployment
 
 ```
 npm run build
@@ -190,37 +187,38 @@ VITE_KEYCLOAK_URL=<auth-url>
 
 ---
 
-## 📊 Project Metrics
+## 📊 Project Statistics
 
 * **34+ backend classes**
-* **15+ APIs**
+* **15+ REST APIs**
 * **12+ UI components**
-* **8+ routes**
-* Auth + RBAC + JWT implementation
+* **8+ application routes**
+* Authentication + RBAC + JWT implementation
 * Optimized builds + caching
 * Integration testing with H2 database
 
 ---
 
-## 🏆 Technical Highlights
+## 🏆 Technical Achievements
 
-✔ Enterprise authentication system
-✔ Concurrency-safe booking logic
-✔ Production-ready deployment setup
-✔ Clean architecture layering
-✔ Scalable infrastructure design
-✔ Professional UX system
+✅ Enterprise authentication system
+✅ Concurrency-safe booking logic
+✅ Production-ready deployment setup
+✅ Clean architecture layering
+✅ Scalable infrastructure design
+✅ Professional user experience
 
 ---
 
-## 🔗 Links
+## 🔗 Project Links
 
 **Live Demo:** `[https://event-ticket-platform-three.vercel.app/]`
 **Source Code:** `[https://github.com/AnjeshDash/Event-Ticket-Platform]`
 
 ---
 
-### 👨‍💻 Author
+## 👨‍💻 Author
 
 **Anjesh Ranjan Dash**
-Full Stack Engineer
+
+Full Stack Developer | Event Management Platform
